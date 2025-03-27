@@ -16,5 +16,11 @@ namespace MoviesForms
 		{
 			InitializeComponent();
 		}
+
+		private void buttonAdd_Click(object sender, EventArgs e)
+		{
+			Connector connector = new Connector();
+			connector.InsertDirector(textBoxFirstName.Text, textBoxLastName.Text);
+		}
 	}
 }

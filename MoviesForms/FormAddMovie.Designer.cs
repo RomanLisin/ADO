@@ -46,7 +46,6 @@
 			this.labelNameMovie.Size = new System.Drawing.Size(67, 13);
 			this.labelNameMovie.TabIndex = 0;
 			this.labelNameMovie.Text = "Name Movie";
-			this.labelNameMovie.Click += new System.EventHandler(this.label1_Click);
 			// 
 			// textBoxNameMovie
 			// 

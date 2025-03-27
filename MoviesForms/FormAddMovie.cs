@@ -15,11 +15,9 @@ namespace MoviesForms
 		public FormAddMovie()
 		{
 			InitializeComponent();
+			Connector connector = new Connector();
+			connector.Select(this.comboBoxDirector, "first_name + ' ' + last_name AS full_name", "Directors");
 		}
 
-		private void label1_Click(object sender, EventArgs e)
-		{
-
-		}
 	}
 }
