@@ -8,19 +8,26 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
+using System.Runtime.InteropServices;
+
 
 namespace MoviesForms
 {
-	public partial class Movies : Form
+	public partial class movies : Form
 	{
 		FormAddDirector formAddDirector;
 		FormAddMovie formAddMovie;
-		public Movies()
+		public movies()
 		{
 			InitializeComponent();
 
-			formAddDirector = new FormAddDirector();  // инициализируем
-			formAddMovie = new FormAddMovie();  // инициализируем
+			formAddDirector = new FormAddDirector(this);  // инициализируем
+			formAddMovie = new FormAddMovie(this);  // инициализируем
+
+			Connector connector = new Connector();
+			connector.Select(this.comboBoxMovies, "title + ' (' + CONVERT(varchar(10), release_date, 101) + ') - ' + first_name + ' ' + last_name AS DisplayText", "Movies,Directors","director_id=director");
+			connector.Select(this.comboBoxDirectors, "first_name + ' ' + last_name AS full_name", "Directors");
+
 			// Create the connection.
 			//using (SqlConnection connection = new SqlConnection(Properties.Settings.Default.connectionString))
 			//{
@@ -62,6 +69,17 @@ namespace MoviesForms
 
 			//}
 		}
+			 public void ReloadMoviesComboBox()
+			{
+				Connector connector = new Connector();
+				connector.Select(this.comboBoxMovies, "title + ' (' + CONVERT(varchar(10), release_date, 101) + ') - ' + first_name + ' ' + last_name AS DisplayText", "Movies,Directors", "director_id=director");
+			}
+		public void ReloadDirectorCombobox()
+		{
+			Connector connector = new Connector();
+			connector.Select(this.comboBoxDirectors, "first_name + ' ' + last_name AS full_name", "Directors");
+		}
+
 
 		private void buttonExit_Click(object sender, EventArgs e)
 		{
@@ -77,5 +95,27 @@ namespace MoviesForms
 		{
 			formAddMovie.ShowDialog(this);
 		}
+
+		private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			Connector connector = new Connector();
+			connector.DeleteDirector(comboBoxDirectors.SelectedItem.ToString());
+			comboBoxDirectors.Items.Clear();
+			comboBoxDirectors.Text = "";
+			connector.Select(this.comboBoxDirectors, "first_name + ' ' + last_name AS full_name", "Directors");
+
+		}
+
+		private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
+		{
+			Connector connector = new Connector();
+			connector.DeleteMovie(comboBoxMovies.SelectedItem.ToString());
+            //Console.WriteLine(comboBoxMovies.SelectedItem.ToString());
+			comboBoxMovies.Items.Clear();
+			comboBoxMovies.Text = "";
+			connector.Select(this.comboBoxMovies, "title + ' (' + CONVERT(varchar(10), release_date, 101) + ') - ' + first_name + ' ' + last_name AS DisplayText", "Movies,Directors", "director_id=director");
+		}
+		
 	}
+	
 }

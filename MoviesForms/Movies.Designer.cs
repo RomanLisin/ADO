@@ -1,6 +1,6 @@
 ﻿namespace MoviesForms
 {
-	partial class Movies
+	partial class movies
 	{
 		/// <summary>
 		/// Required designer variable.
@@ -29,10 +29,10 @@
 		private void InitializeComponent()
 		{
 			this.components = new System.ComponentModel.Container();
-			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Movies));
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(movies));
 			this.labelMovies = new System.Windows.Forms.Label();
-			this.comboBox1 = new System.Windows.Forms.ComboBox();
-			this.comboBox3 = new System.Windows.Forms.ComboBox();
+			this.comboBoxMovies = new System.Windows.Forms.ComboBox();
+			this.comboBoxDirectors = new System.Windows.Forms.ComboBox();
 			this.labelReleaseDate = new System.Windows.Forms.Label();
 			this.buttonExit = new System.Windows.Forms.Button();
 			this.buttonPlay = new System.Windows.Forms.Button();
@@ -42,7 +42,14 @@
 			this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
 			this.ToolStripMenuItemAddMovie = new System.Windows.Forms.ToolStripMenuItem();
 			this.ToolStripMenuItemAddDirector = new System.Windows.Forms.ToolStripMenuItem();
+			this.contextMenuStripForDirector = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.contextMenuStripForMovies = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.deleteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.buttonFilter = new System.Windows.Forms.Button();
 			this.contextMenuStrip.SuspendLayout();
+			this.contextMenuStripForDirector.SuspendLayout();
+			this.contextMenuStripForMovies.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// labelMovies
@@ -55,21 +62,23 @@
 			this.labelMovies.TabIndex = 0;
 			this.labelMovies.Text = "Movies";
 			// 
-			// comboBox1
+			// comboBoxMovies
 			// 
-			this.comboBox1.FormattingEnabled = true;
-			this.comboBox1.Location = new System.Drawing.Point(12, 51);
-			this.comboBox1.Name = "comboBox1";
-			this.comboBox1.Size = new System.Drawing.Size(385, 21);
-			this.comboBox1.TabIndex = 1;
+			this.comboBoxMovies.ContextMenuStrip = this.contextMenuStripForMovies;
+			this.comboBoxMovies.FormattingEnabled = true;
+			this.comboBoxMovies.Location = new System.Drawing.Point(12, 51);
+			this.comboBoxMovies.Name = "comboBoxMovies";
+			this.comboBoxMovies.Size = new System.Drawing.Size(385, 21);
+			this.comboBoxMovies.TabIndex = 1;
 			// 
-			// comboBox3
+			// comboBoxDirectors
 			// 
-			this.comboBox3.FormattingEnabled = true;
-			this.comboBox3.Location = new System.Drawing.Point(15, 201);
-			this.comboBox3.Name = "comboBox3";
-			this.comboBox3.Size = new System.Drawing.Size(385, 21);
-			this.comboBox3.TabIndex = 3;
+			this.comboBoxDirectors.ContextMenuStrip = this.contextMenuStripForDirector;
+			this.comboBoxDirectors.FormattingEnabled = true;
+			this.comboBoxDirectors.Location = new System.Drawing.Point(152, 174);
+			this.comboBoxDirectors.Name = "comboBoxDirectors";
+			this.comboBoxDirectors.Size = new System.Drawing.Size(225, 21);
+			this.comboBoxDirectors.TabIndex = 3;
 			// 
 			// labelReleaseDate
 			// 
@@ -83,7 +92,7 @@
 			// 
 			// buttonExit
 			// 
-			this.buttonExit.Location = new System.Drawing.Point(15, 253);
+			this.buttonExit.Location = new System.Drawing.Point(15, 260);
 			this.buttonExit.Name = "buttonExit";
 			this.buttonExit.Size = new System.Drawing.Size(175, 23);
 			this.buttonExit.TabIndex = 6;
@@ -93,7 +102,7 @@
 			// 
 			// buttonPlay
 			// 
-			this.buttonPlay.Location = new System.Drawing.Point(222, 253);
+			this.buttonPlay.Location = new System.Drawing.Point(222, 260);
 			this.buttonPlay.Name = "buttonPlay";
 			this.buttonPlay.Size = new System.Drawing.Size(175, 23);
 			this.buttonPlay.TabIndex = 7;
@@ -120,7 +129,7 @@
 			// 
 			this.labelDirector.AutoSize = true;
 			this.labelDirector.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.labelDirector.Location = new System.Drawing.Point(23, 164);
+			this.labelDirector.Location = new System.Drawing.Point(23, 171);
 			this.labelDirector.Name = "labelDirector";
 			this.labelDirector.Size = new System.Drawing.Size(83, 24);
 			this.labelDirector.TabIndex = 10;
@@ -132,41 +141,81 @@
             this.ToolStripMenuItemAddMovie,
             this.ToolStripMenuItemAddDirector});
 			this.contextMenuStrip.Name = "contextMenuStrip";
-			this.contextMenuStrip.Size = new System.Drawing.Size(181, 70);
+			this.contextMenuStrip.Size = new System.Drawing.Size(142, 48);
 			// 
 			// ToolStripMenuItemAddMovie
 			// 
 			this.ToolStripMenuItemAddMovie.Name = "ToolStripMenuItemAddMovie";
-			this.ToolStripMenuItemAddMovie.Size = new System.Drawing.Size(180, 22);
+			this.ToolStripMenuItemAddMovie.Size = new System.Drawing.Size(141, 22);
 			this.ToolStripMenuItemAddMovie.Text = "Add Movie";
 			this.ToolStripMenuItemAddMovie.Click += new System.EventHandler(this.ToolStripMenuItemAddMovie_Click);
 			// 
 			// ToolStripMenuItemAddDirector
 			// 
 			this.ToolStripMenuItemAddDirector.Name = "ToolStripMenuItemAddDirector";
-			this.ToolStripMenuItemAddDirector.Size = new System.Drawing.Size(180, 22);
+			this.ToolStripMenuItemAddDirector.Size = new System.Drawing.Size(141, 22);
 			this.ToolStripMenuItemAddDirector.Text = "Add Director";
 			this.ToolStripMenuItemAddDirector.Click += new System.EventHandler(this.ToolStripMenuItemAddDirector_Click);
 			// 
-			// Movies
+			// contextMenuStripForDirector
+			// 
+			this.contextMenuStripForDirector.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteToolStripMenuItem});
+			this.contextMenuStripForDirector.Name = "contextMenuStripForDirector";
+			this.contextMenuStripForDirector.Size = new System.Drawing.Size(108, 26);
+			// 
+			// deleteToolStripMenuItem
+			// 
+			this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(107, 22);
+			this.deleteToolStripMenuItem.Text = "Delete";
+			this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+			// 
+			// contextMenuStripForMovies
+			// 
+			this.contextMenuStripForMovies.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.deleteToolStripMenuItem1});
+			this.contextMenuStripForMovies.Name = "contextMenuStripForMovies";
+			this.contextMenuStripForMovies.Size = new System.Drawing.Size(108, 26);
+			// 
+			// deleteToolStripMenuItem1
+			// 
+			this.deleteToolStripMenuItem1.Name = "deleteToolStripMenuItem1";
+			this.deleteToolStripMenuItem1.Size = new System.Drawing.Size(107, 22);
+			this.deleteToolStripMenuItem1.Text = "Delete";
+			this.deleteToolStripMenuItem1.Click += new System.EventHandler(this.deleteToolStripMenuItem1_Click);
+			// 
+			// buttonFilter
+			// 
+			this.buttonFilter.Location = new System.Drawing.Point(114, 214);
+			this.buttonFilter.Name = "buttonFilter";
+			this.buttonFilter.Size = new System.Drawing.Size(178, 23);
+			this.buttonFilter.TabIndex = 12;
+			this.buttonFilter.Text = "Clear filter";
+			this.buttonFilter.UseVisualStyleBackColor = true;
+			// 
+			// movies
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(410, 296);
+			this.ClientSize = new System.Drawing.Size(410, 304);
 			this.ContextMenuStrip = this.contextMenuStrip;
+			this.Controls.Add(this.buttonFilter);
 			this.Controls.Add(this.labelDirector);
 			this.Controls.Add(this.dateTimePicker2);
 			this.Controls.Add(this.dateTimePicker1);
 			this.Controls.Add(this.buttonPlay);
 			this.Controls.Add(this.buttonExit);
 			this.Controls.Add(this.labelReleaseDate);
-			this.Controls.Add(this.comboBox3);
-			this.Controls.Add(this.comboBox1);
+			this.Controls.Add(this.comboBoxDirectors);
+			this.Controls.Add(this.comboBoxMovies);
 			this.Controls.Add(this.labelMovies);
 			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-			this.Name = "Movies";
+			this.Name = "movies";
 			this.Text = "Movies";
 			this.contextMenuStrip.ResumeLayout(false);
+			this.contextMenuStripForDirector.ResumeLayout(false);
+			this.contextMenuStripForMovies.ResumeLayout(false);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -175,8 +224,8 @@
 		#endregion
 
 		private System.Windows.Forms.Label labelMovies;
-		private System.Windows.Forms.ComboBox comboBox1;
-		private System.Windows.Forms.ComboBox comboBox3;
+		private System.Windows.Forms.ComboBox comboBoxMovies;
+		private System.Windows.Forms.ComboBox comboBoxDirectors;
 		private System.Windows.Forms.Label labelReleaseDate;
 		private System.Windows.Forms.Button buttonExit;
 		private System.Windows.Forms.Button buttonPlay;
@@ -186,6 +235,11 @@
 		private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
 		private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemAddMovie;
 		private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemAddDirector;
+		private System.Windows.Forms.ContextMenuStrip contextMenuStripForDirector;
+		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
+		private System.Windows.Forms.ContextMenuStrip contextMenuStripForMovies;
+		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem1;
+		private System.Windows.Forms.Button buttonFilter;
 	}
 }
 

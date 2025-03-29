@@ -4,9 +4,11 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-//using System.Data.SqlClient;
+using System.Data.SqlClient;
 using System.Configuration;
 using System.Windows.Forms;
+using System.IO;
+using System.Collections;
 
 namespace MoviesForms
 {
@@ -33,6 +35,39 @@ namespace MoviesForms
 			this.connection = new SqlConnection(CONNECTION_STRING); // Создаем подключение к SQL Server
 			Console.WriteLine(CONNECTION_STRING);  // Выводим строку подключения в консоль для отладки
 		}
+
+		public void DeleteMovie(string  name)
+		{
+			string title = name.Split('(')[0].Trim();
+			string condition = $"title = N'{title}'";
+			string query = $"DELETE FROM Movies WHERE {condition}";
+			string cmd = $"IF EXISTS (SELECT title FROM Movies WHERE {condition}) BEGIN {query} END";
+
+			// создаем SQL - комманду
+			SqlCommand command = new SqlCommand(cmd, connection);
+
+			// открываем соединение с базой данных
+			connection.Open();
+			command.ExecuteNonQuery();
+			connection.Close();
+		}
+		public void DeleteDirector(string director)
+		{
+			// Разделяем имя режиссера на части (если нужно)
+			string[] directorParts = director.Split(' ');
+			string firstName = directorParts[0];
+			string lastName = directorParts.Length > 1 ? directorParts[1] : "";
+			string condition = $"last_name = N'{lastName}' AND first_name = N'{firstName}'";
+			string query = $"DELETE FROM Directors WHERE N'{lastName}' = last_name";
+			string cmd = $"IF NOT EXISTS (SELECT director FROM Movies,Directors WHERE {condition} AND director = director_id) BEGIN {query} END";
+			// Создаем SQL-команду
+			SqlCommand command = new SqlCommand(cmd, connection);
+
+			// Открываем соединение с базой данных
+			connection.Open();
+			command.ExecuteNonQuery();  // Выполняем SQL-запрос
+			connection.Close();  // Закрываем соединение
+		}
 		public void InsertDirector(string first_name, string last_name)
 		{
 			string condition = $"last_name = N'{last_name}' AND first_name= N'{first_name}'";
@@ -46,6 +81,78 @@ namespace MoviesForms
 			connection.Open();
 			command.ExecuteNonQuery();  // Выполняем SQL-запрос
 			connection.Close();  // Закрываем соединение
+		}
+
+		//public void InsertMovie(string title, string director, DateTimePicker dateRelease)
+		//{
+		//	string condition = $"release_date = N'{dateRelease.Value}' AND  director = (SELECT director_id FROM Directors WHERE N'{director.Split(' ')[0]}' = first_name)";
+		//	string subQuery = $"SELECT director_id FROM Directors WHERE first_name = N'{director.Split(' ')[0]}";
+		//	string query = $"INSERT Movies(title, release_date, director) VALUES (N'{title}', N'{dateRelease.Value}', N'{subQuery}' )";
+		//	string cmd = $"IF NOT EXISTS (SELECT movie_id FROM Movies WHERE N'{condition}') BEGIN N'{query}' END";
+		//	// Создаем SQL-команду
+		//	SqlCommand command = new SqlCommand(cmd, connection);
+
+		//	// Открываем соединение с базой данных
+		//	connection.Open();
+		//	command.ExecuteNonQuery();  // Выполняем SQL-запрос
+		//	connection.Close();  // Закрываем соединение
+		//}
+
+		public void InsertMovie(string title, string director, DateTimePicker dateRelease)
+		{
+			// Разделяем имя режиссера на части (если нужно)
+			string[] directorParts = director.Split(' ');
+			string firstName = directorParts[0];
+			string lastName = directorParts.Length > 1 ? directorParts[1] : "";
+
+			// Формируем запрос с параметрами для защиты от SQL-инъекций
+			string query = @"
+        DECLARE @directorId INT
+        
+        -- Находим ID режиссера
+        SELECT @directorId = director_id 
+        FROM Directors 
+        WHERE first_name = @firstName AND last_name = @lastName
+        
+        -- Если режиссер не найден, можно добавить обработку этого случая
+        -- или вставить нового режиссера
+        
+        -- Вставляем фильм, если он еще не существует
+        IF NOT EXISTS (
+            SELECT 1 
+            FROM Movies 
+            WHERE title = @title 
+            AND release_date = @releaseDate
+            AND director = @directorId
+        )
+        BEGIN
+            INSERT INTO Movies(title, release_date, director) 
+            VALUES (@title, @releaseDate, @directorId)
+        END";
+
+			// Создаем SQL-команду с параметрами
+			SqlCommand cmd = new SqlCommand(query, connection);
+
+			// Добавляем параметры
+			cmd.Parameters.AddWithValue("@title", title);
+			cmd.Parameters.AddWithValue("@releaseDate", dateRelease.Value);
+			cmd.Parameters.AddWithValue("@firstName", firstName);
+			cmd.Parameters.AddWithValue("@lastName", lastName);
+
+			try
+			{
+				connection.Open();
+				cmd.ExecuteNonQuery();
+			}
+			catch (Exception ex)
+			{
+				// Обработка ошибок
+				MessageBox.Show($"Ошибка при добавлении фильма: {ex.Message}");
+			}
+			finally
+			{
+				connection.Close();
+			}
 		}
 		public void Select(Control control, string fields, string tables, string condition = "" ) // cmd)
 		{

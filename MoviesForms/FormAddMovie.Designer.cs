@@ -29,10 +29,10 @@
 		private void InitializeComponent()
 		{
 			this.labelNameMovie = new System.Windows.Forms.Label();
-			this.textBoxNameMovie = new System.Windows.Forms.TextBox();
+			this.textBoxTitle = new System.Windows.Forms.TextBox();
 			this.labelNameDirector = new System.Windows.Forms.Label();
 			this.labelReleaseDate = new System.Windows.Forms.Label();
-			this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
+			this.dateTimePickerRelease = new System.Windows.Forms.DateTimePicker();
 			this.comboBoxDirector = new System.Windows.Forms.ComboBox();
 			this.buttonCancel = new System.Windows.Forms.Button();
 			this.buttonAdd = new System.Windows.Forms.Button();
@@ -47,12 +47,12 @@
 			this.labelNameMovie.TabIndex = 0;
 			this.labelNameMovie.Text = "Name Movie";
 			// 
-			// textBoxNameMovie
+			// textBoxTitle
 			// 
-			this.textBoxNameMovie.Location = new System.Drawing.Point(111, 35);
-			this.textBoxNameMovie.Name = "textBoxNameMovie";
-			this.textBoxNameMovie.Size = new System.Drawing.Size(197, 20);
-			this.textBoxNameMovie.TabIndex = 1;
+			this.textBoxTitle.Location = new System.Drawing.Point(111, 35);
+			this.textBoxTitle.Name = "textBoxTitle";
+			this.textBoxTitle.Size = new System.Drawing.Size(197, 20);
+			this.textBoxTitle.TabIndex = 1;
 			// 
 			// labelNameDirector
 			// 
@@ -72,13 +72,13 @@
 			this.labelReleaseDate.TabIndex = 3;
 			this.labelReleaseDate.Text = "Release date";
 			// 
-			// dateTimePicker1
+			// dateTimePickerRelease
 			// 
-			this.dateTimePicker1.Format = System.Windows.Forms.DateTimePickerFormat.Short;
-			this.dateTimePicker1.Location = new System.Drawing.Point(111, 116);
-			this.dateTimePicker1.Name = "dateTimePicker1";
-			this.dateTimePicker1.Size = new System.Drawing.Size(79, 20);
-			this.dateTimePicker1.TabIndex = 8;
+			this.dateTimePickerRelease.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+			this.dateTimePickerRelease.Location = new System.Drawing.Point(111, 116);
+			this.dateTimePickerRelease.Name = "dateTimePickerRelease";
+			this.dateTimePickerRelease.Size = new System.Drawing.Size(79, 20);
+			this.dateTimePickerRelease.TabIndex = 8;
 			// 
 			// comboBoxDirector
 			// 
@@ -107,6 +107,7 @@
 			this.buttonAdd.TabIndex = 11;
 			this.buttonAdd.Text = "Add";
 			this.buttonAdd.UseVisualStyleBackColor = true;
+			this.buttonAdd.Click += new System.EventHandler(this.buttonAdd_Click);
 			// 
 			// FormAddMovie
 			// 
@@ -116,10 +117,10 @@
 			this.Controls.Add(this.buttonAdd);
 			this.Controls.Add(this.buttonCancel);
 			this.Controls.Add(this.comboBoxDirector);
-			this.Controls.Add(this.dateTimePicker1);
+			this.Controls.Add(this.dateTimePickerRelease);
 			this.Controls.Add(this.labelReleaseDate);
 			this.Controls.Add(this.labelNameDirector);
-			this.Controls.Add(this.textBoxNameMovie);
+			this.Controls.Add(this.textBoxTitle);
 			this.Controls.Add(this.labelNameMovie);
 			this.Name = "FormAddMovie";
 			this.Text = "FormAddMovie";
@@ -131,10 +132,10 @@
 		#endregion
 
 		private System.Windows.Forms.Label labelNameMovie;
-		private System.Windows.Forms.TextBox textBoxNameMovie;
+		private System.Windows.Forms.TextBox textBoxTitle;
 		private System.Windows.Forms.Label labelNameDirector;
 		private System.Windows.Forms.Label labelReleaseDate;
-		private System.Windows.Forms.DateTimePicker dateTimePicker1;
+		private System.Windows.Forms.DateTimePicker dateTimePickerRelease;
 		private System.Windows.Forms.ComboBox comboBoxDirector;
 		private System.Windows.Forms.Button buttonCancel;
 		private System.Windows.Forms.Button buttonAdd;

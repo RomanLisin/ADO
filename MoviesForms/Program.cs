@@ -16,7 +16,7 @@ namespace MoviesForms
 		{
 			Application.EnableVisualStyles();
 			Application.SetCompatibleTextRenderingDefault(false);
-			Application.Run(new Movies());
+			Application.Run(new movies());
 		}
 	}
 }
