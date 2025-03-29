@@ -24,8 +24,21 @@ namespace MoviesForms
 
 		private void buttonAdd_Click(object sender, EventArgs e)
 		{
+			if (comboBoxDirector.SelectedItem == null)
+			{
+				MessageBox.Show("Select director to add!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+			if (textBoxTitle.Text == "")
+			{
+				MessageBox.Show("Select movie to add!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
 			Connector connector = new Connector();
 			connector.InsertMovie(this.textBoxTitle.Text, this.comboBoxDirector.Text, this.dateTimePickerRelease);
+			this.textBoxTitle.Text = "";
+			this.comboBoxDirector.SelectedIndex = -1;
+			this.dateTimePickerRelease.Value = DateTime.Today;
 			parentForm.ReloadMoviesComboBox();
 		}
 	}

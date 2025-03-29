@@ -22,8 +22,14 @@ namespace MoviesForms
 
 		private void buttonAdd_Click(object sender, EventArgs e)
 		{
+			if (textBoxFirstName.Text == "" || textBoxLastName.Text == "")
+			{
+				MessageBox.Show("Select director name to add!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
 			Connector connector = new Connector();
 			connector.InsertDirector(textBoxFirstName.Text, textBoxLastName.Text);
+			this.Refresh();
 			// Обновляем список режиссёров в главной форме
 			parentForm.ReloadDirectorCombobox();
 		}

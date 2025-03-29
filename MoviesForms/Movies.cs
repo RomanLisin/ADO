@@ -23,6 +23,7 @@ namespace MoviesForms
 
 			formAddDirector = new FormAddDirector(this);  // инициализируем
 			formAddMovie = new FormAddMovie(this);  // инициализируем
+			dateTimePicker1.MinDate = new DateTime(1970, 1, 1);
 
 			Connector connector = new Connector();
 			connector.Select(this.comboBoxMovies, "title + ' (' + CONVERT(varchar(10), release_date, 101) + ') - ' + first_name + ' ' + last_name AS DisplayText", "Movies,Directors","director_id=director");
@@ -98,6 +99,11 @@ namespace MoviesForms
 
 		private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			if (comboBoxDirectors.SelectedItem == null)
+			{
+				MessageBox.Show("Select director for delete!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
 			Connector connector = new Connector();
 			connector.DeleteDirector(comboBoxDirectors.SelectedItem.ToString());
 			comboBoxDirectors.Items.Clear();
@@ -108,6 +114,11 @@ namespace MoviesForms
 
 		private void deleteToolStripMenuItem1_Click(object sender, EventArgs e)
 		{
+			if (comboBoxMovies.SelectedItem == null)
+			{
+				MessageBox.Show("Select movie for delete!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
 			Connector connector = new Connector();
 			connector.DeleteMovie(comboBoxMovies.SelectedItem.ToString());
             //Console.WriteLine(comboBoxMovies.SelectedItem.ToString());
@@ -115,7 +126,13 @@ namespace MoviesForms
 			comboBoxMovies.Text = "";
 			connector.Select(this.comboBoxMovies, "title + ' (' + CONVERT(varchar(10), release_date, 101) + ') - ' + first_name + ' ' + last_name AS DisplayText", "Movies,Directors", "director_id=director");
 		}
-		
+
+		private void buttonFilter_Click(object sender, EventArgs e)
+		{
+			comboBoxDirectors.Text = "";
+			dateTimePicker1.Value = dateTimePicker1.MinDate;
+			dateTimePicker2.Value = DateTime.Today;
+		}
 	}
 	
 }
