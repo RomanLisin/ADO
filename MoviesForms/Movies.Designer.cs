@@ -93,6 +93,7 @@
 			this.comboBoxDirectors.Name = "comboBoxDirectors";
 			this.comboBoxDirectors.Size = new System.Drawing.Size(225, 21);
 			this.comboBoxDirectors.TabIndex = 3;
+			this.comboBoxDirectors.SelectedIndexChanged += new System.EventHandler(this.comboBoxDirectors_SelectedIndexChanged);
 			// 
 			// contextMenuStripForDirector
 			// 
@@ -144,6 +145,7 @@
 			this.dateTimePicker1.Name = "dateTimePicker1";
 			this.dateTimePicker1.Size = new System.Drawing.Size(80, 20);
 			this.dateTimePicker1.TabIndex = 8;
+			this.dateTimePicker1.ValueChanged += new System.EventHandler(this.comboBoxDirectors_SelectedIndexChanged);
 			// 
 			// dateTimePicker2
 			// 
@@ -152,6 +154,7 @@
 			this.dateTimePicker2.Name = "dateTimePicker2";
 			this.dateTimePicker2.Size = new System.Drawing.Size(81, 20);
 			this.dateTimePicker2.TabIndex = 9;
+			this.dateTimePicker2.ValueChanged += new System.EventHandler(this.comboBoxDirectors_SelectedIndexChanged);
 			// 
 			// labelDirector
 			// 

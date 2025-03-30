@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Runtime.InteropServices;
+using System.IO;
 
 
 namespace MoviesForms
@@ -17,16 +18,27 @@ namespace MoviesForms
 	{
 		FormAddDirector formAddDirector;
 		FormAddMovie formAddMovie;
+		Connector connector = new Connector();
+		string fields = "title + ' (' + CONVERT(varchar(10), release_date, 23) + ') - ' + first_name + ' ' + last_name AS DisplayText";
+		// For CONVERT
+		//Основные стили форматирования даты в SQL Server
+		//Код стиля Формат  Пример
+		//101	MM/DD/YYYY	12/31/2023
+		//103	DD/MM/YYYY	31/12/2023
+		//112	YYYYMMDD	20231231
+		//120	YYYY-MM-DD HH:MI:SS	2023-12-31 23:59:59
+		string conditions = "director_id=director";
+
 		public movies()
 		{
 			InitializeComponent();
 
 			formAddDirector = new FormAddDirector(this);  // инициализируем
 			formAddMovie = new FormAddMovie(this);  // инициализируем
-			dateTimePicker1.MinDate = new DateTime(1970, 1, 1);
+			dateTimePicker1.MinDate = new DateTime(1980, 1, 1);
 
-			Connector connector = new Connector();
-			connector.Select(this.comboBoxMovies, "title + ' (' + CONVERT(varchar(10), release_date, 101) + ') - ' + first_name + ' ' + last_name AS DisplayText", "Movies,Directors","director_id=director");
+			//Connector connector = new Connector();
+			connector.Select(this.comboBoxMovies, fields, "Movies,Directors", conditions);
 			connector.Select(this.comboBoxDirectors, "first_name + ' ' + last_name AS full_name", "Directors");
 
 			// Create the connection.
@@ -72,12 +84,12 @@ namespace MoviesForms
 		}
 			 public void ReloadMoviesComboBox()
 			{
-				Connector connector = new Connector();
-				connector.Select(this.comboBoxMovies, "title + ' (' + CONVERT(varchar(10), release_date, 101) + ') - ' + first_name + ' ' + last_name AS DisplayText", "Movies,Directors", "director_id=director");
+				//Connector connector = new Connector();
+				connector.Select(this.comboBoxMovies, fields, "Movies,Directors", conditions);
 			}
 		public void ReloadDirectorCombobox()
 		{
-			Connector connector = new Connector();
+			//Connector connector = new Connector();
 			connector.Select(this.comboBoxDirectors, "first_name + ' ' + last_name AS full_name", "Directors");
 		}
 
@@ -104,7 +116,7 @@ namespace MoviesForms
 				MessageBox.Show("Select director for delete!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
-			Connector connector = new Connector();
+			//Connector connector = new Connector();
 			connector.DeleteDirector(comboBoxDirectors.SelectedItem.ToString());
 			comboBoxDirectors.Items.Clear();
 			comboBoxDirectors.Text = "";
@@ -119,20 +131,86 @@ namespace MoviesForms
 				MessageBox.Show("Select movie for delete!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
-			Connector connector = new Connector();
+			//Connector connector = new Connector();
 			connector.DeleteMovie(comboBoxMovies.SelectedItem.ToString());
             //Console.WriteLine(comboBoxMovies.SelectedItem.ToString());
 			comboBoxMovies.Items.Clear();
 			comboBoxMovies.Text = "";
-			connector.Select(this.comboBoxMovies, "title + ' (' + CONVERT(varchar(10), release_date, 101) + ') - ' + first_name + ' ' + last_name AS DisplayText", "Movies,Directors", "director_id=director");
+			//comboBoxMovies.SelectedItem = null;
+			connector.Select(this.comboBoxMovies, fields, "Movies,Directors", conditions);
 		}
 
 		private void buttonFilter_Click(object sender, EventArgs e)
 		{
+			
+			//Connector connector = new Connector();
 			comboBoxDirectors.Text = "";
 			dateTimePicker1.Value = dateTimePicker1.MinDate;
 			dateTimePicker2.Value = DateTime.Today;
+			//UpdateMovieList();
+			//if (comboBoxDirectors.SelectedItem == null)
+			//{
+			//	conditions = $"director_id = director AND release_date BETWEEN N'{this.dateTimePicker1.Value.Date.ToString("yyyy-MM-dd")}' " +
+			//		$"AND N'{this.dateTimePicker2.Value.Date.ToString("yyyy-MM-dd")}' ";
+			//}
+			//else
+			//{
+			//	// Разделяем имя режиссера на части (если нужно)
+			//	string[] directorParts = this.comboBoxDirectors.SelectedItem.ToString().Split(' ');
+			//	string firstName = directorParts[0];
+			//	string lastName = directorParts.Length > 1 ? directorParts[1] : "";
+			//	conditions = $"director_id = director AND release_date BETWEEN N'{this.dateTimePicker1.Value.Date.ToString("yyyy-MM-dd")}' " +
+			//		$"AND N'{this.dateTimePicker2.Value.Date.ToString("yyyy-MM-dd")}' " +
+			//		$"AND first_name = N'{firstName}' AND last_name = N'{lastName}'";
+			//}
+
+			conditions = "director_id = director";
+			connector.Select(this.comboBoxMovies, fields, "Movies,Directors", conditions);
 		}
+
+		private void comboBoxDirectors_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (comboBoxDirectors.SelectedItem == null)
+			{
+				conditions = $"director_id = director AND release_date BETWEEN N'{this.dateTimePicker1.Value.Date.ToString("yyyy-MM-dd")}' " +
+					$"AND N'{this.dateTimePicker2.Value.Date.ToString("yyyy-MM-dd")}' ";
+			}
+			else
+			{
+				// Разделяем имя режиссера на части (если нужно)
+				string[] directorParts = this.comboBoxDirectors.SelectedItem.ToString().Split(' ');
+				string firstName = directorParts[0];
+				string lastName = directorParts.Length > 1 ? directorParts[1] : "";
+				conditions = $"director_id = director AND release_date BETWEEN N'{this.dateTimePicker1.Value.Date.ToString("yyyy-MM-dd")}' " +
+					$"AND N'{this.dateTimePicker2.Value.Date.ToString("yyyy-MM-dd")}' " +
+					$"AND first_name = N'{firstName}' AND last_name = N'{lastName}'";
+			}
+			connector.Select(this.comboBoxMovies, fields, "Movies,Directors", conditions);
+			//UpdateMovieList();
+		}
+
+		private void UpdateMovieList()
+		{
+			string startDate = dateTimePicker1.Value.Date.ToString("yyyy-MM-dd");
+			string endDate = dateTimePicker2.Value.Date.ToString("yyyy-MM-dd");
+
+			if (comboBoxDirectors.SelectedItem == null)
+			{
+				conditions = $"director_id = director AND release_date BETWEEN N'{startDate}' AND N'{endDate}'";
+			}
+			else
+			{
+				string[] directorParts = comboBoxDirectors.SelectedItem.ToString().Split(' ');
+				string firstName = directorParts[0];
+				string lastName = directorParts.Length > 1 ? directorParts[1] : "";
+
+				conditions = $"director_id = director AND release_date BETWEEN N'{startDate}' AND N'{endDate}' " +
+							 $"AND first_name = N'{firstName}' AND last_name = N'{lastName}'";
+			}
+
+			connector.Select(comboBoxMovies, fields, "Movies,Directors", conditions);
+		}
+
 	}
 	
 }
