@@ -138,6 +138,7 @@ namespace MoviesForms
 			comboBoxMovies.Text = "";
 			//comboBoxMovies.SelectedItem = null;
 			connector.Select(this.comboBoxMovies, fields, "Movies,Directors", conditions);
+			
 		}
 
 		private void buttonFilter_Click(object sender, EventArgs e)

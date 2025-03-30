@@ -124,6 +124,7 @@
 			this.Controls.Add(this.labelNameMovie);
 			this.Name = "FormAddMovie";
 			this.Text = "FormAddMovie";
+			this.Load += new System.EventHandler(this.FormAddMovie_Load);
 			this.ResumeLayout(false);
 			this.PerformLayout();
 

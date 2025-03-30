@@ -18,12 +18,16 @@ namespace MoviesForms
 		{
 			InitializeComponent();
 			Connector connector = new Connector();
-			connector.Select(this.comboBoxDirector, "first_name + ' ' + last_name AS full_name", "Directors");
 			parentForm = parent;
+			
+			connector.Select(this.comboBoxDirector, "first_name + ' ' + last_name AS full_name", "Directors");
+			
 		}
 
 		private void buttonAdd_Click(object sender, EventArgs e)
 		{
+			Connector connector = new Connector();
+			//connector.Select(this.comboBoxDirector, "first_name + ' ' + last_name AS full_name", "Directors");
 			if (comboBoxDirector.SelectedItem == null)
 			{
 				MessageBox.Show("Select director to add!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -34,12 +38,16 @@ namespace MoviesForms
 				MessageBox.Show("Select movie to add!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
 				return;
 			}
-			Connector connector = new Connector();
 			connector.InsertMovie(this.textBoxTitle.Text, this.comboBoxDirector.Text, this.dateTimePickerRelease);
 			this.textBoxTitle.Text = "";
 			this.comboBoxDirector.SelectedIndex = -1;
 			this.dateTimePickerRelease.Value = DateTime.Today;
 			parentForm.ReloadMoviesComboBox();
+		}
+
+		private void FormAddMovie_Load(object sender, EventArgs e)
+		{
+			this.comboBoxDirector.SelectedIndex = -1;
 		}
 	}
 }
