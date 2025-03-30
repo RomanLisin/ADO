@@ -18,12 +18,12 @@ namespace MoviesConnector
 		readonly SqlConnection connection;
 
 		// конструктор по умолчанию, использует строку подключения из конфигурационного файла
-		public Connector() : this(ConfigurationManager.ConnectionStrings["Movies_VPD_311"].ConnectionString)
-		{
-		//	CONNECTION_STRING =
-		//		ConfigurationManager.ConnectionStrings["Movies_VPD_311"].ConnectionString;
-		//	this.connection = new SqlConnection(CONNECTION_STRING);
-		}
+		//public Connector() : this(ConfigurationManager.ConnectionStrings["Movies_VPD_311"].ConnectionString)
+		//{
+		////	CONNECTION_STRING =
+		////		ConfigurationManager.ConnectionStrings["Movies_VPD_311"].ConnectionString;
+		////	this.connection = new SqlConnection(CONNECTION_STRING);
+		//}
 
 		// Конструктор с параметром, принимает строку подключения
 		public Connector(string connection_string)
