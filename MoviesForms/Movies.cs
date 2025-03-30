@@ -82,8 +82,8 @@ namespace MoviesForms
 
 			//}
 		}
-		public string GetName()
-		{ return comboBoxDirectors.Text; }
+		public string GetName() => comboBoxDirectors.Text;  // rocketchip
+		
 			 public void ReloadMoviesComboBox()
 			{
 				//Connector connector = new Connector();
