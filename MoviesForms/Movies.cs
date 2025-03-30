@@ -82,6 +82,8 @@ namespace MoviesForms
 
 			//}
 		}
+		public string GetName()
+		{ return comboBoxDirectors.Text; }
 			 public void ReloadMoviesComboBox()
 			{
 				//Connector connector = new Connector();

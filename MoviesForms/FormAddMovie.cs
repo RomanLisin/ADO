@@ -45,9 +45,10 @@ namespace MoviesForms
 			parentForm.ReloadMoviesComboBox();
 		}
 
-		private void FormAddMovie_Load(object sender, EventArgs e)
+		private void FormAddMovie_Shown(object sender, EventArgs e)
 		{
-			this.comboBoxDirector.SelectedIndex = -1;
+			this.comboBoxDirector.Text = parentForm.GetName();
+
 		}
 	}
 }
