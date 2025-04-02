@@ -29,10 +29,13 @@
 		private void InitializeComponent()
 		{
 			this.statusStrip = new System.Windows.Forms.StatusStrip();
+			this.statusStripCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tabPageStudents = new System.Windows.Forms.TabPage();
 			this.dgvStudents = new System.Windows.Forms.DataGridView();
 			this.tabPageGroups = new System.Windows.Forms.TabPage();
+			this.labeGroupsDirection = new System.Windows.Forms.Label();
+			this.comboBoxGroupsDirection = new System.Windows.Forms.ComboBox();
 			this.dgvGroups = new System.Windows.Forms.DataGridView();
 			this.tabPageDirections = new System.Windows.Forms.TabPage();
 			this.dgvDirectors = new System.Windows.Forms.DataGridView();
@@ -40,7 +43,6 @@
 			this.dgvDisciplines = new System.Windows.Forms.DataGridView();
 			this.tabPageTeachers = new System.Windows.Forms.TabPage();
 			this.dgvTeachers = new System.Windows.Forms.DataGridView();
-			this.statusStripCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.statusStrip.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPageStudents.SuspendLayout();
@@ -64,6 +66,12 @@
 			this.statusStrip.Size = new System.Drawing.Size(800, 22);
 			this.statusStrip.TabIndex = 0;
 			this.statusStrip.Text = "statusStrip1";
+			// 
+			// statusStripCountLabel
+			// 
+			this.statusStripCountLabel.Name = "statusStripCountLabel";
+			this.statusStripCountLabel.Size = new System.Drawing.Size(123, 17);
+			this.statusStripCountLabel.Text = "statusStripCountLabel";
 			// 
 			// tabControl
 			// 
@@ -106,6 +114,8 @@
 			// 
 			// tabPageGroups
 			// 
+			this.tabPageGroups.Controls.Add(this.labeGroupsDirection);
+			this.tabPageGroups.Controls.Add(this.comboBoxGroupsDirection);
 			this.tabPageGroups.Controls.Add(this.dgvGroups);
 			this.tabPageGroups.Location = new System.Drawing.Point(4, 22);
 			this.tabPageGroups.Name = "tabPageGroups";
@@ -114,6 +124,25 @@
 			this.tabPageGroups.TabIndex = 1;
 			this.tabPageGroups.Text = "Groups";
 			this.tabPageGroups.UseVisualStyleBackColor = true;
+			// 
+			// labeGroupsDirection
+			// 
+			this.labeGroupsDirection.AutoSize = true;
+			this.labeGroupsDirection.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.labeGroupsDirection.Location = new System.Drawing.Point(366, 6);
+			this.labeGroupsDirection.Name = "labeGroupsDirection";
+			this.labeGroupsDirection.Size = new System.Drawing.Size(72, 20);
+			this.labeGroupsDirection.TabIndex = 2;
+			this.labeGroupsDirection.Text = "Direction";
+			// 
+			// comboBoxGroupsDirection
+			// 
+			this.comboBoxGroupsDirection.FormattingEnabled = true;
+			this.comboBoxGroupsDirection.Location = new System.Drawing.Point(457, 6);
+			this.comboBoxGroupsDirection.Name = "comboBoxGroupsDirection";
+			this.comboBoxGroupsDirection.Size = new System.Drawing.Size(271, 21);
+			this.comboBoxGroupsDirection.TabIndex = 1;
+			this.comboBoxGroupsDirection.SelectedIndexChanged += new System.EventHandler(this.comboBoxGroupsDirection_SelectedIndexChanged);
 			// 
 			// dgvGroups
 			// 
@@ -192,12 +221,6 @@
 			this.dgvTeachers.Size = new System.Drawing.Size(792, 372);
 			this.dgvTeachers.TabIndex = 0;
 			// 
-			// statusStripCountLabel
-			// 
-			this.statusStripCountLabel.Name = "statusStripCountLabel";
-			this.statusStripCountLabel.Size = new System.Drawing.Size(123, 17);
-			this.statusStripCountLabel.Text = "statusStripCountLabel";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -213,6 +236,7 @@
 			this.tabPageStudents.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgvStudents)).EndInit();
 			this.tabPageGroups.ResumeLayout(false);
+			this.tabPageGroups.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).EndInit();
 			this.tabPageDirections.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgvDirectors)).EndInit();
@@ -240,6 +264,8 @@
 		private System.Windows.Forms.DataGridView dgvDisciplines;
 		private System.Windows.Forms.DataGridView dgvTeachers;
 		private System.Windows.Forms.ToolStripStatusLabel statusStripCountLabel;
+		private System.Windows.Forms.ComboBox comboBoxGroupsDirection;
+		private System.Windows.Forms.Label labeGroupsDirection;
 	}
 }
 

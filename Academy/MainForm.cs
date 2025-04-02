@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.Configuration;
+using System.Globalization;
 
 namespace Academy
 {
@@ -59,10 +60,52 @@ namespace Academy
 
 		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			comboBoxGroupsDirection.SelectedItem = null;
 			int i = tabControl.SelectedIndex;
 			//Query query = queries[i];
 			tables[i].DataSource = connector.Select(queries[i].Columns, queries[i].Tables, queries[i].Condition, queries[i].GroupBy);
 			statusStripCountLabel.Text = $"{status_messages[i]}  {tables[i].RowCount - 1}";
+			LoadComboBoxGroupDirection(i);
 		}
+
+		private void LoadComboBoxGroupDirection(int i)
+		{
+			if (i == 1)
+			{
+			comboBoxGroupsDirection.Items.Clear();
+				int j = i + 1;
+				dgvDirectors.DataSource = connector.Select(queries[j].Columns, queries[j].Tables, queries[j].Condition, queries[j].GroupBy);
+			
+				foreach (DataGridViewRow row in dgvDirectors.Rows)
+				{
+					if (row.Cells["direction_name"].Value != null)
+					{
+						comboBoxGroupsDirection.Items.Add(row.Cells["direction_name"].Value.ToString());
+					}
+				}
+				comboBoxGroupsDirection.Items.Add("Not select");
+			}
+		}
+		private void comboBoxGroupsDirection_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (comboBoxGroupsDirection.SelectedItem == null) return;
+
+			string directionName = comboBoxGroupsDirection.SelectedItem.ToString().Replace("'", "''"); // Предотвращение SQL-инъекций
+
+			if (comboBoxGroupsDirection.SelectedItem.ToString() == "Not select")
+			{
+				tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
+			}
+			else
+			{
+				dgvGroups.DataSource = connector.Select(
+					"group_id, group_name, COUNT(stud_id) AS students_count, direction_name",
+					"Students, Groups, Directions",
+					$"direction=direction_id AND [group] = group_id AND direction_name = '{directionName}'",
+					"group_id, group_name, direction_name"
+				);
+			}
+		}
+
 	}
 }
