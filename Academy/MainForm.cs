@@ -24,7 +24,10 @@ namespace Academy
 				"direction=direction_id AND [group] = group_id",
 				"group_id, group_name, direction_name"
 				),
-			new Query("*", "Directions"),
+			new Query("direction_name, [groups_count] = COUNT(DISTINCT group_id), [students_count] = COUNT(stud_id)  ",
+				"Directions, Groups, Students",
+				"[group] = group_id AND direction=direction_id",
+				"direction_name"),
 			new Query("*", "Disciplines"),
 			new Query("*", "Teachers"),
 		};
