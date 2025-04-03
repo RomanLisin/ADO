@@ -65,26 +65,38 @@ namespace Academy
 			//Query query = queries[i];
 			tables[i].DataSource = connector.Select(queries[i].Columns, queries[i].Tables, queries[i].Condition, queries[i].GroupBy);
 			statusStripCountLabel.Text = $"{status_messages[i]}  {tables[i].RowCount - 1}";
-			LoadComboBoxGroupDirection(i);
+
+			foreach (Control control in tabControl.TabPages[i].Controls)
+			{
+				if (control is ComboBox cb)
+				{
+					LoadComboBoxDirections(tabControl.TabPages[i].Name, "tabPageDirections", cb);
+					//MessageBox.Show("Найден ComboBox: " + cb.Name);
+					break;
+				}
+			}
 		}
 
-		private void LoadComboBoxGroupDirection(int i)
+		private void LoadComboBoxDirections(string tabControlName, string tabControlNameSource, ComboBox cb)
 		{
-			if (i == 1)
-			{
-			comboBoxGroupsDirection.Items.Clear();
-				int j = i + 1;
-				dgvDirectors.DataSource = connector.Select(queries[j].Columns, queries[j].Tables, queries[j].Condition, queries[j].GroupBy);
+			int i = GetTabIndexByName(tabControlName);
+			cb.Items.Clear();
+				int j = GetTabIndexByName(tabControlNameSource);
+			dgvDirectors.DataSource = connector.Select(queries[j].Columns, queries[j].Tables, queries[j].Condition, queries[j].GroupBy);
 			
 				foreach (DataGridViewRow row in dgvDirectors.Rows)
 				{
 					if (row.Cells["direction_name"].Value != null)
 					{
-						comboBoxGroupsDirection.Items.Add(row.Cells["direction_name"].Value.ToString());
+						cb.Items.Add(row.Cells["direction_name"].Value.ToString());
 					}
 				}
-				comboBoxGroupsDirection.Items.Add("Not select");
-			}
+				cb.Items.Add("All directions");
+			
+		}
+
+		private void LoadComboBoxGroups()
+		{ 
 		}
 		private void comboBoxGroupsDirection_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -92,7 +104,7 @@ namespace Academy
 
 			string directionName = comboBoxGroupsDirection.SelectedItem.ToString().Replace("'", "''"); // Предотвращение SQL-инъекций
 
-			if (comboBoxGroupsDirection.SelectedItem.ToString() == "Not select")
+			if (comboBoxGroupsDirection.SelectedItem.ToString() == "All directions")
 			{
 				tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
 			}
@@ -107,5 +119,16 @@ namespace Academy
 			}
 		}
 
+		int GetTabIndexByName(string tabName)
+		{
+			for (int i = 0; i < tabControl.TabPages.Count; i++)
+			{
+				if (tabControl.TabPages[i].Name == tabName)
+				{
+					return i; // возвращаем индекс, если имя совпадает
+				}
+			}
+			return -1; // eсли вкладка не найдена
+		}
 	}
 }

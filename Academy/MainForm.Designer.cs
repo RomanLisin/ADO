@@ -32,6 +32,9 @@
 			this.statusStripCountLabel = new System.Windows.Forms.ToolStripStatusLabel();
 			this.tabControl = new System.Windows.Forms.TabControl();
 			this.tabPageStudents = new System.Windows.Forms.TabPage();
+			this.labelStudentsGroups = new System.Windows.Forms.Label();
+			this.comboBoxStudentsDirections = new System.Windows.Forms.ComboBox();
+			this.comboBoxStudentsGroups = new System.Windows.Forms.ComboBox();
 			this.dgvStudents = new System.Windows.Forms.DataGridView();
 			this.tabPageGroups = new System.Windows.Forms.TabPage();
 			this.labeGroupsDirection = new System.Windows.Forms.Label();
@@ -43,6 +46,7 @@
 			this.dgvDisciplines = new System.Windows.Forms.DataGridView();
 			this.tabPageTeachers = new System.Windows.Forms.TabPage();
 			this.dgvTeachers = new System.Windows.Forms.DataGridView();
+			this.labelStudentsDirections = new System.Windows.Forms.Label();
 			this.statusStrip.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPageStudents.SuspendLayout();
@@ -92,6 +96,10 @@
 			// 
 			// tabPageStudents
 			// 
+			this.tabPageStudents.Controls.Add(this.labelStudentsDirections);
+			this.tabPageStudents.Controls.Add(this.labelStudentsGroups);
+			this.tabPageStudents.Controls.Add(this.comboBoxStudentsDirections);
+			this.tabPageStudents.Controls.Add(this.comboBoxStudentsGroups);
 			this.tabPageStudents.Controls.Add(this.dgvStudents);
 			this.tabPageStudents.Location = new System.Drawing.Point(4, 22);
 			this.tabPageStudents.Name = "tabPageStudents";
@@ -100,6 +108,32 @@
 			this.tabPageStudents.TabIndex = 0;
 			this.tabPageStudents.Text = "Students";
 			this.tabPageStudents.UseVisualStyleBackColor = true;
+			// 
+			// labelStudentsGroups
+			// 
+			this.labelStudentsGroups.AutoSize = true;
+			this.labelStudentsGroups.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.labelStudentsGroups.Location = new System.Drawing.Point(209, 6);
+			this.labelStudentsGroups.Name = "labelStudentsGroups";
+			this.labelStudentsGroups.Size = new System.Drawing.Size(62, 20);
+			this.labelStudentsGroups.TabIndex = 3;
+			this.labelStudentsGroups.Text = "Groups";
+			// 
+			// comboBoxStudentsDirections
+			// 
+			this.comboBoxStudentsDirections.FormattingEnabled = true;
+			this.comboBoxStudentsDirections.Location = new System.Drawing.Point(557, 6);
+			this.comboBoxStudentsDirections.Name = "comboBoxStudentsDirections";
+			this.comboBoxStudentsDirections.Size = new System.Drawing.Size(194, 21);
+			this.comboBoxStudentsDirections.TabIndex = 2;
+			// 
+			// comboBoxStudentsGroups
+			// 
+			this.comboBoxStudentsGroups.FormattingEnabled = true;
+			this.comboBoxStudentsGroups.Location = new System.Drawing.Point(297, 6);
+			this.comboBoxStudentsGroups.Name = "comboBoxStudentsGroups";
+			this.comboBoxStudentsGroups.Size = new System.Drawing.Size(132, 21);
+			this.comboBoxStudentsGroups.TabIndex = 1;
 			// 
 			// dgvStudents
 			// 
@@ -221,6 +255,16 @@
 			this.dgvTeachers.Size = new System.Drawing.Size(792, 372);
 			this.dgvTeachers.TabIndex = 0;
 			// 
+			// labelStudentsDirections
+			// 
+			this.labelStudentsDirections.AutoSize = true;
+			this.labelStudentsDirections.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.labelStudentsDirections.Location = new System.Drawing.Point(461, 6);
+			this.labelStudentsDirections.Name = "labelStudentsDirections";
+			this.labelStudentsDirections.Size = new System.Drawing.Size(80, 20);
+			this.labelStudentsDirections.TabIndex = 4;
+			this.labelStudentsDirections.Text = "Directions";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -234,6 +278,7 @@
 			this.statusStrip.PerformLayout();
 			this.tabControl.ResumeLayout(false);
 			this.tabPageStudents.ResumeLayout(false);
+			this.tabPageStudents.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvStudents)).EndInit();
 			this.tabPageGroups.ResumeLayout(false);
 			this.tabPageGroups.PerformLayout();
@@ -266,6 +311,10 @@
 		private System.Windows.Forms.ToolStripStatusLabel statusStripCountLabel;
 		private System.Windows.Forms.ComboBox comboBoxGroupsDirection;
 		private System.Windows.Forms.Label labeGroupsDirection;
+		private System.Windows.Forms.Label labelStudentsGroups;
+		private System.Windows.Forms.ComboBox comboBoxStudentsDirections;
+		private System.Windows.Forms.ComboBox comboBoxStudentsGroups;
+		private System.Windows.Forms.Label labelStudentsDirections;
 	}
 }
 
