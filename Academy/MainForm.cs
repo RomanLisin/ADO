@@ -21,7 +21,7 @@ namespace Academy
 		Query[] queries = new Query[]
 		{
 			new Query("*", "Students"),
-			new Query("group_id, group_name,COUNT(stud_id) AS students_count,direction_name", 
+			new Query("group_id, group_name,COUNT(stud_id) AS students_count,direction_name",
 				"Students,Groups,Directions",
 				"direction=direction_id AND [group] = group_id",
 				"group_id, group_name, direction_name"
@@ -80,18 +80,18 @@ namespace Academy
 		{
 			int i = GetTabIndexByName(tabControlName);
 			cb.Items.Clear();
-				int j = GetTabIndexByName(tabControlNameSource);
+			int j = GetTabIndexByName(tabControlNameSource);
 			dgvDirectors.DataSource = connector.Select(queries[j].Columns, queries[j].Tables, queries[j].Condition, queries[j].GroupBy);
-			
-				foreach (DataGridViewRow row in dgvDirectors.Rows)
+
+			foreach (DataGridViewRow row in dgvDirectors.Rows)
+			{
+				if (row.Cells["direction_name"].Value != null)
 				{
-					if (row.Cells["direction_name"].Value != null)
-					{
-						cb.Items.Add(row.Cells["direction_name"].Value.ToString());
-					}
+					cb.Items.Add(row.Cells["direction_name"].Value.ToString());
 				}
-				cb.Items.Add("All directions");
-			
+			}
+			cb.Items.Add("All directions");
+
 		}
 
 		private void LoadComboBoxGroups()
@@ -123,7 +123,7 @@ namespace Academy
 					$"direction_name ='{comboBoxStudentsDirections.SelectedItem.ToString().Replace("'", "''")}'",
 					"group_id, group_name, direction_name"
 				);
-					comboBoxStudentsGroups.DisplayMember = "group_name";
+				comboBoxStudentsGroups.DisplayMember = "group_name";
 			}
 		}
 		private void comboBoxGroupsDirection_SelectedIndexChanged(object sender, EventArgs e)
@@ -171,6 +171,20 @@ namespace Academy
 				dgvStudents.DataSource = connector.Select(query.Columns, query.Tables, query.Condition, query.GroupBy);
 			}
 
+		}
+
+		private void checkBoxEmptyDirections_CheckedChanged(object sender, EventArgs e)
+		{
+			
+			Query queryDirection = new Query("d.direction_name,\r\n    ISNULL(g.groups_count, 0) AS groups_count,\r\n    ISNULL(s.students_count, 0) AS students_count",
+												"Directions d LEFT JOIN (SELECT direction, COUNT(*) AS groups_count FROM Groups GROUP BY direction) g ON d.direction_id = g.direction " +
+												"LEFT JOIN(SELECT g.direction, COUNT(s.stud_id) AS students_count FROM Groups g JOIN Students s ON g.group_id = s.[group] GROUP BY g.direction) s ON d.direction_id = s.direction; ");
+			if (checkBoxEmptyDirections.Checked)
+			{
+				dgvDirectors.DataSource = null;
+				dgvDirectors.DataSource = connector.Select(queryDirection.Columns, queryDirection.Tables, queryDirection.Condition, queryDirection.GroupBy);
+			}
+			else tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
 		}
 	}
 }

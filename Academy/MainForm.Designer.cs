@@ -47,6 +47,8 @@
 			this.dgvDisciplines = new System.Windows.Forms.DataGridView();
 			this.tabPageTeachers = new System.Windows.Forms.TabPage();
 			this.dgvTeachers = new System.Windows.Forms.DataGridView();
+			this.checkBoxEmptyGroups = new System.Windows.Forms.CheckBox();
+			this.checkBoxEmptyDirections = new System.Windows.Forms.CheckBox();
 			this.statusStrip.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPageStudents.SuspendLayout();
@@ -160,6 +162,7 @@
 			// 
 			// tabPageGroups
 			// 
+			this.tabPageGroups.Controls.Add(this.checkBoxEmptyGroups);
 			this.tabPageGroups.Controls.Add(this.labeGroupsDirection);
 			this.tabPageGroups.Controls.Add(this.comboBoxGroupsDirection);
 			this.tabPageGroups.Controls.Add(this.dgvGroups);
@@ -203,6 +206,7 @@
 			// 
 			// tabPageDirections
 			// 
+			this.tabPageDirections.Controls.Add(this.checkBoxEmptyDirections);
 			this.tabPageDirections.Controls.Add(this.dgvDirectors);
 			this.tabPageDirections.Location = new System.Drawing.Point(4, 22);
 			this.tabPageDirections.Name = "tabPageDirections";
@@ -267,6 +271,31 @@
 			this.dgvTeachers.Size = new System.Drawing.Size(792, 372);
 			this.dgvTeachers.TabIndex = 0;
 			// 
+			// checkBoxEmptyGroups
+			// 
+			this.checkBoxEmptyGroups.AutoSize = true;
+			this.checkBoxEmptyGroups.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.checkBoxEmptyGroups.Location = new System.Drawing.Point(196, 8);
+			this.checkBoxEmptyGroups.Name = "checkBoxEmptyGroups";
+			this.checkBoxEmptyGroups.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+			this.checkBoxEmptyGroups.Size = new System.Drawing.Size(140, 20);
+			this.checkBoxEmptyGroups.TabIndex = 3;
+			this.checkBoxEmptyGroups.Text = "View empty groups";
+			this.checkBoxEmptyGroups.UseVisualStyleBackColor = true;
+			// 
+			// checkBoxEmptyDirections
+			// 
+			this.checkBoxEmptyDirections.AutoSize = true;
+			this.checkBoxEmptyDirections.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+			this.checkBoxEmptyDirections.Location = new System.Drawing.Point(595, 6);
+			this.checkBoxEmptyDirections.Name = "checkBoxEmptyDirections";
+			this.checkBoxEmptyDirections.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
+			this.checkBoxEmptyDirections.Size = new System.Drawing.Size(156, 20);
+			this.checkBoxEmptyDirections.TabIndex = 4;
+			this.checkBoxEmptyDirections.Text = "View empty directions";
+			this.checkBoxEmptyDirections.UseVisualStyleBackColor = true;
+			this.checkBoxEmptyDirections.CheckedChanged += new System.EventHandler(this.checkBoxEmptyDirections_CheckedChanged);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -286,6 +315,7 @@
 			this.tabPageGroups.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).EndInit();
 			this.tabPageDirections.ResumeLayout(false);
+			this.tabPageDirections.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvDirectors)).EndInit();
 			this.tabPageDisciplines.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgvDisciplines)).EndInit();
@@ -317,6 +347,8 @@
 		private System.Windows.Forms.ComboBox comboBoxStudentsDirections;
 		private System.Windows.Forms.ComboBox comboBoxStudentsGroups;
 		private System.Windows.Forms.Label labelStudentsDirections;
+		private System.Windows.Forms.CheckBox checkBoxEmptyGroups;
+		private System.Windows.Forms.CheckBox checkBoxEmptyDirections;
 	}
 }
 
