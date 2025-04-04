@@ -16,6 +16,7 @@ namespace Academy
 	public partial class MainForm : Form
 	{
 		Connector connector;
+		Query query;
 
 		Query[] queries = new Query[]
 		{
@@ -56,13 +57,14 @@ namespace Academy
 			connector = new Connector(ConfigurationManager.ConnectionStrings["VPD_311_Import"].ConnectionString);
 			dgvStudents.DataSource = connector.Select("*", "Students");
 			statusStripCountLabel.Text = $"Количество студентов: {dgvStudents.RowCount - 1}";
+			tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
 		}
 
 		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
+
 			comboBoxGroupsDirection.SelectedItem = null;
 			int i = tabControl.SelectedIndex;
-			//Query query = queries[i];
 			tables[i].DataSource = connector.Select(queries[i].Columns, queries[i].Tables, queries[i].Condition, queries[i].GroupBy);
 			statusStripCountLabel.Text = $"{status_messages[i]}  {tables[i].RowCount - 1}";
 
@@ -75,6 +77,9 @@ namespace Academy
 					break;
 				}
 			}
+			LoadComboBoxGroups();
+			
+
 		}
 
 		private void LoadComboBoxDirections(string tabControlName, string tabControlNameSource, ComboBox cb)
@@ -96,7 +101,52 @@ namespace Academy
 		}
 
 		private void LoadComboBoxGroups()
-		{ 
+		{
+			//int countGroups = Convert.ToInt32(connector.Select("COUNT(*) as group_count", "Groups", " group_id IN (SELECT DISTINCT [group] FROM Students"));
+				
+			//comboBoxStudentsGroups.SelectedItem = null;
+			comboBoxStudentsGroups.DataSource = connector.Select(
+				"group_name",
+				"Students, Groups, Directions",
+				$"direction=direction_id AND [group] = group_id",
+				"group_id, group_name, direction_name"
+				);
+			comboBoxStudentsGroups.DisplayMember = "group_name";
+		}
+		private void comboBoxStudentsDirections_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (comboBoxStudentsDirections.SelectedItem.ToString() == "All directions")
+			{
+				//Console.WriteLine("\nЗдесь должна быть ошибка\n");
+				comboBoxStudentsGroups.DataSource = null;  // Отключаем привязку данных, без этого ошибка:
+				//"Items collection cannot be modified when the DataSource property is set."
+				//(Коллекция Items не может быть изменена, когда установлен DataSource.)
+				//comboBoxStudentsGroups.Items.Clear();
+				tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
+
+				//Console.WriteLine("если до сюда дошли, значит перепрыгнули Items.Clear()");
+				//tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
+				//comboBoxStudentsGroups.DataSource = null;
+				//comboBoxStudentsGroups.SelectedIndex = -1;
+				//comboBoxStudentsGroups.Text = "";
+				//tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
+				//comboBoxStudentsGroups.DataSource = null; // Отключаем DataSource
+				//comboBoxStudentsGroups.Items.Clear(); // Очищаем элементы
+				//comboBoxStudentsGroups.Text = ""; // Очищаем текст вручную
+				LoadComboBoxGroups();
+			}
+			else
+			{
+				//string directionName = comboBoxGroupsDirection.SelectedItem.ToString().Replace("'", "''"); // Предотвращение SQL-инъекций
+				comboBoxStudentsGroups.DataSource = connector.Select(
+					"group_name",
+					"Students, Groups, Directions",
+					$"direction=direction_id AND [group] = group_id AND " +
+					$"direction_name ='{comboBoxStudentsDirections.SelectedItem.ToString().Replace("'", "''")}'",
+					"group_id, group_name, direction_name"
+				);
+					comboBoxStudentsGroups.DisplayMember = "group_name";
+			}
 		}
 		private void comboBoxGroupsDirection_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -106,7 +156,9 @@ namespace Academy
 
 			if (comboBoxGroupsDirection.SelectedItem.ToString() == "All directions")
 			{
+				
 				tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
+			
 			}
 			else
 			{
@@ -129,6 +181,26 @@ namespace Academy
 				}
 			}
 			return -1; // eсли вкладка не найдена
+		}
+
+		private void comboBoxStudentsGroups_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			dgvStudents.DataSource = null;
+			if (comboBoxStudentsGroups.SelectedItem is DataRowView rowView)
+			{
+				string comboBoxStudentsValue = rowView["group_name"].ToString().Trim(); // Извлекаем поле group_name
+				Query subQuery = new Query("group_", "Groups", $"group_name = N'{comboBoxStudentsValue}'");
+				query = new Query("stud_id, last_name, first_name, middle_name, birth_date, group_name",
+					"Students, Groups",
+				$"[group] = group_id AND group_name = N'{comboBoxStudentsValue}'" //N'{connector.Select(subQuery.Columns, subQuery.Tables, subQuery.Condition)}'"
+				);
+				dgvStudents.DataSource = connector.Select(query.Columns, query.Tables, query.Condition, query.GroupBy);
+				tabPageStudents.Controls.Add(dgvStudents);
+				dgvStudents.Visible = true;
+				dgvStudents.Refresh();
+				//tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
+			}
+		
 		}
 	}
 }
