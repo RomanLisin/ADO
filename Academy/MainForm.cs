@@ -59,11 +59,8 @@ namespace Academy
 			statusStripCountLabel.Text = $"Количество студентов: {dgvStudents.RowCount - 1}";
 			tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
 		}
-
 		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
-
-			comboBoxGroupsDirection.SelectedItem = null;
 			int i = tabControl.SelectedIndex;
 			tables[i].DataSource = connector.Select(queries[i].Columns, queries[i].Tables, queries[i].Condition, queries[i].GroupBy);
 			statusStripCountLabel.Text = $"{status_messages[i]}  {tables[i].RowCount - 1}";
@@ -77,11 +74,8 @@ namespace Academy
 					break;
 				}
 			}
-			LoadComboBoxGroups();
-			
-
+			comboBoxStudentsGroups_SelectedIndexChanged(comboBoxStudentsGroups.SelectedItem, EventArgs.Empty);
 		}
-
 		private void LoadComboBoxDirections(string tabControlName, string tabControlNameSource, ComboBox cb)
 		{
 			int i = GetTabIndexByName(tabControlName);
@@ -102,9 +96,6 @@ namespace Academy
 
 		private void LoadComboBoxGroups()
 		{
-			//int countGroups = Convert.ToInt32(connector.Select("COUNT(*) as group_count", "Groups", " group_id IN (SELECT DISTINCT [group] FROM Students"));
-				
-			//comboBoxStudentsGroups.SelectedItem = null;
 			comboBoxStudentsGroups.DataSource = connector.Select(
 				"group_name",
 				"Students, Groups, Directions",
@@ -117,27 +108,14 @@ namespace Academy
 		{
 			if (comboBoxStudentsDirections.SelectedItem.ToString() == "All directions")
 			{
-				//Console.WriteLine("\nЗдесь должна быть ошибка\n");
 				comboBoxStudentsGroups.DataSource = null;  // Отключаем привязку данных, без этого ошибка:
+				comboBoxStudentsGroups.SelectedItem = null;
 				//"Items collection cannot be modified when the DataSource property is set."
 				//(Коллекция Items не может быть изменена, когда установлен DataSource.)
-				//comboBoxStudentsGroups.Items.Clear();
 				tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
-
-				//Console.WriteLine("если до сюда дошли, значит перепрыгнули Items.Clear()");
-				//tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
-				//comboBoxStudentsGroups.DataSource = null;
-				//comboBoxStudentsGroups.SelectedIndex = -1;
-				//comboBoxStudentsGroups.Text = "";
-				//tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
-				//comboBoxStudentsGroups.DataSource = null; // Отключаем DataSource
-				//comboBoxStudentsGroups.Items.Clear(); // Очищаем элементы
-				//comboBoxStudentsGroups.Text = ""; // Очищаем текст вручную
-				LoadComboBoxGroups();
 			}
 			else
 			{
-				//string directionName = comboBoxGroupsDirection.SelectedItem.ToString().Replace("'", "''"); // Предотвращение SQL-инъекций
 				comboBoxStudentsGroups.DataSource = connector.Select(
 					"group_name",
 					"Students, Groups, Directions",
@@ -156,9 +134,7 @@ namespace Academy
 
 			if (comboBoxGroupsDirection.SelectedItem.ToString() == "All directions")
 			{
-				
 				tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
-			
 			}
 			else
 			{
@@ -170,7 +146,6 @@ namespace Academy
 				);
 			}
 		}
-
 		int GetTabIndexByName(string tabName)
 		{
 			for (int i = 0; i < tabControl.TabPages.Count; i++)
@@ -182,12 +157,11 @@ namespace Academy
 			}
 			return -1; // eсли вкладка не найдена
 		}
-
 		private void comboBoxStudentsGroups_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			dgvStudents.DataSource = null;
 			if (comboBoxStudentsGroups.SelectedItem is DataRowView rowView)
 			{
+
 				string comboBoxStudentsValue = rowView["group_name"].ToString().Trim(); // Извлекаем поле group_name
 				Query subQuery = new Query("group_", "Groups", $"group_name = N'{comboBoxStudentsValue}'");
 				query = new Query("stud_id, last_name, first_name, middle_name, birth_date, group_name",
@@ -195,12 +169,8 @@ namespace Academy
 				$"[group] = group_id AND group_name = N'{comboBoxStudentsValue}'" //N'{connector.Select(subQuery.Columns, subQuery.Tables, subQuery.Condition)}'"
 				);
 				dgvStudents.DataSource = connector.Select(query.Columns, query.Tables, query.Condition, query.GroupBy);
-				tabPageStudents.Controls.Add(dgvStudents);
-				dgvStudents.Visible = true;
-				dgvStudents.Refresh();
-				//tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
 			}
-		
+
 		}
 	}
 }
