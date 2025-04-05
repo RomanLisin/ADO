@@ -39,7 +39,7 @@
 			// labelInputName
 			// 
 			this.labelInputName.AutoSize = true;
-			this.labelInputName.Location = new System.Drawing.Point(43, 110);
+			this.labelInputName.Location = new System.Drawing.Point(49, 110);
 			this.labelInputName.Name = "labelInputName";
 			this.labelInputName.Size = new System.Drawing.Size(60, 13);
 			this.labelInputName.TabIndex = 0;
@@ -49,13 +49,13 @@
 			// 
 			this.textBoxName.Location = new System.Drawing.Point(126, 103);
 			this.textBoxName.Name = "textBoxName";
-			this.textBoxName.Size = new System.Drawing.Size(140, 20);
+			this.textBoxName.Size = new System.Drawing.Size(161, 20);
 			this.textBoxName.TabIndex = 1;
 			// 
 			// buttonGroupAdd
 			// 
 			this.buttonGroupAdd.DialogResult = System.Windows.Forms.DialogResult.OK;
-			this.buttonGroupAdd.Location = new System.Drawing.Point(191, 164);
+			this.buttonGroupAdd.Location = new System.Drawing.Point(212, 164);
 			this.buttonGroupAdd.Name = "buttonGroupAdd";
 			this.buttonGroupAdd.Size = new System.Drawing.Size(75, 23);
 			this.buttonGroupAdd.TabIndex = 2;
@@ -66,7 +66,7 @@
 			// buttonGroupAddCancel
 			// 
 			this.buttonGroupAddCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-			this.buttonGroupAddCancel.Location = new System.Drawing.Point(64, 164);
+			this.buttonGroupAddCancel.Location = new System.Drawing.Point(102, 164);
 			this.buttonGroupAddCancel.Name = "buttonGroupAddCancel";
 			this.buttonGroupAddCancel.Size = new System.Drawing.Size(75, 23);
 			this.buttonGroupAddCancel.TabIndex = 3;
@@ -76,15 +76,15 @@
 			// comboBoxSelectDirection
 			// 
 			this.comboBoxSelectDirection.FormattingEnabled = true;
-			this.comboBoxSelectDirection.Location = new System.Drawing.Point(46, 49);
+			this.comboBoxSelectDirection.Location = new System.Drawing.Point(32, 49);
 			this.comboBoxSelectDirection.Name = "comboBoxSelectDirection";
-			this.comboBoxSelectDirection.Size = new System.Drawing.Size(220, 21);
+			this.comboBoxSelectDirection.Size = new System.Drawing.Size(255, 21);
 			this.comboBoxSelectDirection.TabIndex = 4;
 			// 
 			// labelSelectDirection
 			// 
 			this.labelSelectDirection.AutoSize = true;
-			this.labelSelectDirection.Location = new System.Drawing.Point(43, 24);
+			this.labelSelectDirection.Location = new System.Drawing.Point(29, 21);
 			this.labelSelectDirection.Name = "labelSelectDirection";
 			this.labelSelectDirection.Size = new System.Drawing.Size(80, 13);
 			this.labelSelectDirection.TabIndex = 5;

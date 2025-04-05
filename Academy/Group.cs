@@ -12,7 +12,8 @@ using System.Windows.Forms;
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
-
+using System.Runtime.InteropServices;
+//using System.IO;
 
 namespace Academy
 {
@@ -32,11 +33,12 @@ namespace Academy
 		{
 			directionNameQuery = new Query("direction_name", "Directions");
 			dtDirections = connector.Select(directionNameQuery.Columns, directionNameQuery.Tables);
-			foreach (DataGridViewRow row in dtDirections.Rows)
+			cb.Items.Clear();
+			foreach (DataRow row in dtDirections.Rows)
 			{
-				if (row.Cells["direction_name"].Value != null)
+				if (row["direction_name"] != DBNull.Value)  //именно так в DataTable представлено "null" значение, сравнивать с null напрямую нельзя
 				{
-					//cb.Items.Add(row.Cells["direction_name"].Value.ToString());
+					cb.Items.Add(row["direction_name"].ToString());
 				}
 			}
 		}
