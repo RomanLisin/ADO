@@ -189,8 +189,10 @@ namespace Academy
 
 		private void checkBoxEmptyGroups_CheckedChanged(object sender, EventArgs e)
 		{
-			Query queryDirection = new Query("g.group_id,g.group_name,\r\n    ISNULL(s.students_count, 0) AS students_count,\r\n ",
-												" groups g LEFT JOIN (SELECT [group], COUNT(*) AS students_count FROM Students GROUP BY [group]) s ON g.group_id = s.[group] ");
+			Query queryDirection = new Query("g.group_id, g.group_name, ISNULL(s.students_count, 0) AS students_count, d.direction_name",
+											" Groups g LEFT JOIN (SELECT [group], COUNT(stud_id) AS students_count FROM Students GROUP BY [group]) s ON g.group_id = s.[group] LEFT JOIN Directions d ON g.direction = d.direction_id",
+											"",
+											"g.group_id, g.group_name, s.students_count, d.direction_name;");
 			if (checkBoxEmptyGroups.Checked)
 			{
 				dgvGroups.DataSource = null;
