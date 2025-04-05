@@ -17,6 +17,7 @@ namespace Academy
 	{
 		Connector connector;
 		Query query;
+		AddGroup addGroup; 
 
 		Query[] queries = new Query[]
 		{
@@ -58,6 +59,7 @@ namespace Academy
 			dgvStudents.DataSource = connector.Select("*", "Students");
 			statusStripCountLabel.Text = $"Количество студентов: {dgvStudents.RowCount - 1}";
 			tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
+			addGroup = new AddGroup();
 		}
 		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -199,6 +201,11 @@ namespace Academy
 				dgvGroups.DataSource = connector.Select(queryDirection.Columns, queryDirection.Tables, queryDirection.Condition, queryDirection.GroupBy);
 			}
 			else tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
+		}
+
+		private void addGroupToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			addGroup.Show(this);
 		}
 	}
 }

@@ -60,6 +60,20 @@ namespace Academy
 			connection.Close();
 			return table;
 		}
+		public void InsertGroup(string groupName, string directionName)
+		{
+			string condition = $" name = N'{groupName}'";
+			string subQuery = $"(SELECT direction_id FROM Directions WHERE direction_name = N'{directionName}')";
+			string query = $"INSERT Groups(name), Groups(direction) VALUES (N'{groupName}', N'{subQuery}')";
+			string cmd = $"IF NOT EXISTS (SELECT group_id FROM Groups WHERE {condition}) BEGIN {query} END";
+			// Создаем SQL-команду
+			SqlCommand command = new SqlCommand(cmd, connection);
+
+			// Открываем соединение с базой данных
+			connection.Open();
+			command.ExecuteNonQuery();  // Выполняем SQL-запрос
+			connection.Close();  // Закрываем соединение
+		}
 
 		[DllImport("kernel32.dll")]
 		public static extern bool AllocConsole();

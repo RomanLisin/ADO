@@ -49,6 +49,11 @@
 			this.dgvDisciplines = new System.Windows.Forms.DataGridView();
 			this.tabPageTeachers = new System.Windows.Forms.TabPage();
 			this.dgvTeachers = new System.Windows.Forms.DataGridView();
+			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.addGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPageStudents.SuspendLayout();
@@ -61,6 +66,7 @@
 			((System.ComponentModel.ISupportInitialize)(this.dgvDisciplines)).BeginInit();
 			this.tabPageTeachers.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvTeachers)).BeginInit();
+			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// statusStrip
@@ -166,6 +172,7 @@
 			this.tabPageGroups.Controls.Add(this.labeGroupsDirection);
 			this.tabPageGroups.Controls.Add(this.comboBoxGroupsDirection);
 			this.tabPageGroups.Controls.Add(this.dgvGroups);
+			this.tabPageGroups.Controls.Add(this.menuStrip1);
 			this.tabPageGroups.Location = new System.Drawing.Point(4, 22);
 			this.tabPageGroups.Name = "tabPageGroups";
 			this.tabPageGroups.Padding = new System.Windows.Forms.Padding(3);
@@ -178,7 +185,7 @@
 			// 
 			this.checkBoxEmptyGroups.AutoSize = true;
 			this.checkBoxEmptyGroups.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.checkBoxEmptyGroups.Location = new System.Drawing.Point(196, 8);
+			this.checkBoxEmptyGroups.Location = new System.Drawing.Point(267, 7);
 			this.checkBoxEmptyGroups.Name = "checkBoxEmptyGroups";
 			this.checkBoxEmptyGroups.RightToLeft = System.Windows.Forms.RightToLeft.Yes;
 			this.checkBoxEmptyGroups.Size = new System.Drawing.Size(140, 20);
@@ -191,7 +198,7 @@
 			// 
 			this.labeGroupsDirection.AutoSize = true;
 			this.labeGroupsDirection.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-			this.labeGroupsDirection.Location = new System.Drawing.Point(366, 6);
+			this.labeGroupsDirection.Location = new System.Drawing.Point(438, 5);
 			this.labeGroupsDirection.Name = "labeGroupsDirection";
 			this.labeGroupsDirection.Size = new System.Drawing.Size(72, 20);
 			this.labeGroupsDirection.TabIndex = 2;
@@ -200,9 +207,9 @@
 			// comboBoxGroupsDirection
 			// 
 			this.comboBoxGroupsDirection.FormattingEnabled = true;
-			this.comboBoxGroupsDirection.Location = new System.Drawing.Point(457, 6);
+			this.comboBoxGroupsDirection.Location = new System.Drawing.Point(527, 5);
 			this.comboBoxGroupsDirection.Name = "comboBoxGroupsDirection";
-			this.comboBoxGroupsDirection.Size = new System.Drawing.Size(271, 21);
+			this.comboBoxGroupsDirection.Size = new System.Drawing.Size(241, 21);
 			this.comboBoxGroupsDirection.TabIndex = 1;
 			this.comboBoxGroupsDirection.SelectedIndexChanged += new System.EventHandler(this.comboBoxGroupsDirection_SelectedIndexChanged);
 			// 
@@ -297,6 +304,45 @@
 			this.dgvTeachers.Size = new System.Drawing.Size(792, 372);
 			this.dgvTeachers.TabIndex = 0;
 			// 
+			// menuStrip1
+			// 
+			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+			this.menuStrip1.Location = new System.Drawing.Point(3, 3);
+			this.menuStrip1.Name = "menuStrip1";
+			this.menuStrip1.Size = new System.Drawing.Size(786, 24);
+			this.menuStrip1.TabIndex = 4;
+			this.menuStrip1.Text = "menuStrip1";
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addGroupToolStripMenuItem,
+            this.changeToolStripMenuItem,
+            this.deleteToolStripMenuItem});
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(52, 20);
+			this.toolStripMenuItem1.Text = "Group";
+			// 
+			// addGroupToolStripMenuItem
+			// 
+			this.addGroupToolStripMenuItem.Name = "addGroupToolStripMenuItem";
+			this.addGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.addGroupToolStripMenuItem.Text = "Add";
+			this.addGroupToolStripMenuItem.Click += new System.EventHandler(this.addGroupToolStripMenuItem_Click);
+			// 
+			// changeToolStripMenuItem
+			// 
+			this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
+			this.changeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.changeToolStripMenuItem.Text = "Change";
+			// 
+			// deleteToolStripMenuItem
+			// 
+			this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.deleteToolStripMenuItem.Text = "Delete";
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -304,6 +350,7 @@
 			this.ClientSize = new System.Drawing.Size(800, 450);
 			this.Controls.Add(this.tabControl);
 			this.Controls.Add(this.statusStrip);
+			this.MainMenuStrip = this.menuStrip1;
 			this.Name = "MainForm";
 			this.Text = "Academy VPD_311";
 			this.statusStrip.ResumeLayout(false);
@@ -322,6 +369,8 @@
 			((System.ComponentModel.ISupportInitialize)(this.dgvDisciplines)).EndInit();
 			this.tabPageTeachers.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgvTeachers)).EndInit();
+			this.menuStrip1.ResumeLayout(false);
+			this.menuStrip1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -350,6 +399,11 @@
 		private System.Windows.Forms.Label labelStudentsDirections;
 		private System.Windows.Forms.CheckBox checkBoxEmptyGroups;
 		private System.Windows.Forms.CheckBox checkBoxEmptyDirections;
+		private System.Windows.Forms.MenuStrip menuStrip1;
+		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
+		private System.Windows.Forms.ToolStripMenuItem addGroupToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem changeToolStripMenuItem;
+		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
 	}
 }
 
