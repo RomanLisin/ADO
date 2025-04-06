@@ -100,7 +100,7 @@ namespace Academy
 			string member_name = $"d_{field_name.ToLower()}s";
 			Dictionary<string, int> source = this.GetType().GetField(member_name).GetValue(this) as Dictionary<string, int>;
 			if (query.Condition != "") query.Condition += " AND";
-            query.Condition += $" [{field_name.ToLower()}] = {d_directions[(sender as ComboBox).SelectedItem.ToString()]}";
+            query.Condition += $" [{field_name.ToLower()}] = {source[(sender as ComboBox).SelectedItem.ToString()]}";
 			LoadTab(query);
             Console.WriteLine((sender as ComboBox).Name);
             Console.WriteLine(e);
