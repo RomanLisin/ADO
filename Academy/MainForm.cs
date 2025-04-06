@@ -59,7 +59,7 @@ namespace Academy
 			dgvStudents.DataSource = connector.Select("*", "Students");
 			statusStripCountLabel.Text = $"Количество студентов: {dgvStudents.RowCount - 1}";
 			tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
-			addGroup = new AddGroup();
+			
 		}
 		private void tabControl_SelectedIndexChanged(object sender, EventArgs e)
 		{
@@ -189,7 +189,7 @@ namespace Academy
 			else tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
 		}
 
-		private void checkBoxEmptyGroups_CheckedChanged(object sender, EventArgs e)
+		public void checkBoxEmptyGroups_CheckedChanged(object sender, EventArgs e)
 		{
 			Query queryDirection = new Query("g.group_id, g.group_name, ISNULL(s.students_count, 0) AS students_count, d.direction_name",
 											" Groups g LEFT JOIN (SELECT [group], COUNT(stud_id) AS students_count FROM Students GROUP BY [group]) s ON g.group_id = s.[group] LEFT JOIN Directions d ON g.direction = d.direction_id",
@@ -205,7 +205,13 @@ namespace Academy
 
 		private void addGroupToolStripMenuItem_Click(object sender, EventArgs e)
 		{
+			addGroup = new AddGroup(this);
 			addGroup.Show(this);
+		}
+
+		public void RefreshGroups()
+		{
+			checkBoxEmptyGroups_CheckedChanged(checkBoxEmptyGroups, EventArgs.Empty);
 		}
 	}
 }

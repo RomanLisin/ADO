@@ -397,7 +397,7 @@
 		private System.Windows.Forms.ComboBox comboBoxStudentsDirections;
 		private System.Windows.Forms.ComboBox comboBoxStudentsGroups;
 		private System.Windows.Forms.Label labelStudentsDirections;
-		private System.Windows.Forms.CheckBox checkBoxEmptyGroups;
+		public System.Windows.Forms.CheckBox checkBoxEmptyGroups;
 		private System.Windows.Forms.CheckBox checkBoxEmptyDirections;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;

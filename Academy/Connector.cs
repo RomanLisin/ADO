@@ -8,6 +8,7 @@ using System.Runtime.InteropServices;  // Для того, чтобы подкл
 using System.Data.SqlClient;
 using System.Configuration;
 using System.Data;
+using System.Windows.Forms;
 
 namespace Academy
 {
@@ -62,9 +63,10 @@ namespace Academy
 		}
 		public void InsertGroup(string groupName, string directionName)
 		{
+			string subQueryIdentity = "(SELECT ISNULL(MAX(group_id),0) + 1 FROM Groups)";
 			string condition = $" group_name = N'{groupName}'";
 			string subQuery = $"(SELECT direction_id FROM Directions WHERE direction_name = N'{directionName}')";
-			string query = $"INSERT INTO Groups (group_name, direction) VALUES (N'{groupName}', {subQuery})";
+			string query = $"INSERT INTO Groups (group_id, group_name, direction) VALUES ({subQueryIdentity}, N'{groupName}', {subQuery})";
 			string cmd = $"IF NOT EXISTS (SELECT group_id FROM Groups WHERE {condition}) BEGIN {query} END";
 			// Создаем SQL-команду
 			SqlCommand command = new SqlCommand(cmd, connection);

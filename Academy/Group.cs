@@ -22,12 +22,14 @@ namespace Academy
 		Connector connector;
 		Query directionNameQuery;
 		DataTable dtDirections;
-		public AddGroup()
+		private MainForm parentForm;
+		public AddGroup(MainForm parentForm)
 		{
 			InitializeComponent();
 			connector = new Connector(ConfigurationManager.ConnectionStrings["VPD_311_Import"].ConnectionString);
-			DataTable dtDirections = new DataTable();
+			dtDirections = new DataTable();
 			LoadComboBoxSelectDirections(comboBoxSelectDirection);
+			this.parentForm = parentForm;
 		}
 		private void LoadComboBoxSelectDirections(ComboBox cb)
 		{
@@ -44,7 +46,19 @@ namespace Academy
 		}
 		private void buttonGroupAdd_Click(object sender, EventArgs e)
 		{
+			if (comboBoxSelectDirection.SelectedItem == null)
+			{
+				MessageBox.Show("Select direction to add!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
+			if (textBoxName.Text == "")
+			{
+				MessageBox.Show("Input name group to add!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+				return;
+			}
 			connector.InsertGroup(textBoxName.Text, comboBoxSelectDirection.SelectedItem.ToString());
+			parentForm.RefreshGroups();
+			this.Close();
 		}
 	}
 }
