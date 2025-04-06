@@ -17,7 +17,8 @@ namespace Academy
 	{
 		Connector connector;
 		Query query;
-		AddGroup addGroup; 
+		AddGroup addGroup;
+		GroupDelete groupDelete;
 
 		Query[] queries = new Query[]
 		{
@@ -273,6 +274,12 @@ namespace Academy
 		public void RefreshGroups()
 		{
 			checkBoxEmptyGroups_CheckedChanged(checkBoxEmptyGroups, EventArgs.Empty);
+		}
+
+		private void deleteToolStripMenuItem_Click(object sender, EventArgs e)
+		{
+			groupDelete = new GroupDelete();
+			groupDelete.Show(this);
 		}
 	}
 }

@@ -48,11 +48,17 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Connector.cs" />
-    <Compile Include="Group.cs">
+    <Compile Include="GroupDelete.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Group.Designer.cs">
-      <DependentUpon>Group.cs</DependentUpon>
+    <Compile Include="GroupDelete.Designer.cs">
+      <DependentUpon>GroupDelete.cs</DependentUpon>
+    </Compile>
+    <Compile Include="GroupAdd.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="GroupAdd.Designer.cs">
+      <DependentUpon>GroupAdd.cs</DependentUpon>
     </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -63,8 +69,11 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Query.cs" />
-    <EmbeddedResource Include="Group.resx">
-      <DependentUpon>Group.cs</DependentUpon>
+    <EmbeddedResource Include="GroupDelete.resx">
+      <DependentUpon>GroupDelete.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="GroupAdd.resx">
+      <DependentUpon>GroupAdd.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>

@@ -42,6 +42,10 @@
 			this.labeGroupsDirection = new System.Windows.Forms.Label();
 			this.comboBoxGroupsDirection = new System.Windows.Forms.ComboBox();
 			this.dgvGroups = new System.Windows.Forms.DataGridView();
+			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+			this.addGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.tabPageDirections = new System.Windows.Forms.TabPage();
 			this.checkBoxEmptyDirections = new System.Windows.Forms.CheckBox();
 			this.dgvDirectors = new System.Windows.Forms.DataGridView();
@@ -49,24 +53,19 @@
 			this.dgvDisciplines = new System.Windows.Forms.DataGridView();
 			this.tabPageTeachers = new System.Windows.Forms.TabPage();
 			this.dgvTeachers = new System.Windows.Forms.DataGridView();
-			this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-			this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-			this.addGroupToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.changeToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-			this.deleteToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
 			this.statusStrip.SuspendLayout();
 			this.tabControl.SuspendLayout();
 			this.tabPageStudents.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvStudents)).BeginInit();
 			this.tabPageGroups.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).BeginInit();
+			this.menuStrip1.SuspendLayout();
 			this.tabPageDirections.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvDirectors)).BeginInit();
 			this.tabPageDisciplines.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvDisciplines)).BeginInit();
 			this.tabPageTeachers.SuspendLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvTeachers)).BeginInit();
-			this.menuStrip1.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// statusStrip
@@ -224,6 +223,39 @@
 			this.dgvGroups.Size = new System.Drawing.Size(796, 368);
 			this.dgvGroups.TabIndex = 0;
 			// 
+			// menuStrip1
+			// 
+			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripMenuItem1});
+			this.menuStrip1.Location = new System.Drawing.Point(3, 3);
+			this.menuStrip1.Name = "menuStrip1";
+			this.menuStrip1.Size = new System.Drawing.Size(786, 24);
+			this.menuStrip1.TabIndex = 4;
+			this.menuStrip1.Text = "menuStrip1";
+			// 
+			// toolStripMenuItem1
+			// 
+			this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.addGroupToolStripMenuItem,
+            this.deleteToolStripMenuItem});
+			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+			this.toolStripMenuItem1.Size = new System.Drawing.Size(52, 20);
+			this.toolStripMenuItem1.Text = "Group";
+			// 
+			// addGroupToolStripMenuItem
+			// 
+			this.addGroupToolStripMenuItem.Name = "addGroupToolStripMenuItem";
+			this.addGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.addGroupToolStripMenuItem.Text = "Add";
+			this.addGroupToolStripMenuItem.Click += new System.EventHandler(this.addGroupToolStripMenuItem_Click);
+			// 
+			// deleteToolStripMenuItem
+			// 
+			this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
+			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+			this.deleteToolStripMenuItem.Text = "Delete";
+			this.deleteToolStripMenuItem.Click += new System.EventHandler(this.deleteToolStripMenuItem_Click);
+			// 
 			// tabPageDirections
 			// 
 			this.tabPageDirections.Controls.Add(this.checkBoxEmptyDirections);
@@ -304,45 +336,6 @@
 			this.dgvTeachers.Size = new System.Drawing.Size(792, 372);
 			this.dgvTeachers.TabIndex = 0;
 			// 
-			// menuStrip1
-			// 
-			this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripMenuItem1});
-			this.menuStrip1.Location = new System.Drawing.Point(3, 3);
-			this.menuStrip1.Name = "menuStrip1";
-			this.menuStrip1.Size = new System.Drawing.Size(786, 24);
-			this.menuStrip1.TabIndex = 4;
-			this.menuStrip1.Text = "menuStrip1";
-			// 
-			// toolStripMenuItem1
-			// 
-			this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.addGroupToolStripMenuItem,
-            this.changeToolStripMenuItem,
-            this.deleteToolStripMenuItem});
-			this.toolStripMenuItem1.Name = "toolStripMenuItem1";
-			this.toolStripMenuItem1.Size = new System.Drawing.Size(52, 20);
-			this.toolStripMenuItem1.Text = "Group";
-			// 
-			// addGroupToolStripMenuItem
-			// 
-			this.addGroupToolStripMenuItem.Name = "addGroupToolStripMenuItem";
-			this.addGroupToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.addGroupToolStripMenuItem.Text = "Add";
-			this.addGroupToolStripMenuItem.Click += new System.EventHandler(this.addGroupToolStripMenuItem_Click);
-			// 
-			// changeToolStripMenuItem
-			// 
-			this.changeToolStripMenuItem.Name = "changeToolStripMenuItem";
-			this.changeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.changeToolStripMenuItem.Text = "Change";
-			// 
-			// deleteToolStripMenuItem
-			// 
-			this.deleteToolStripMenuItem.Name = "deleteToolStripMenuItem";
-			this.deleteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-			this.deleteToolStripMenuItem.Text = "Delete";
-			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -362,6 +355,8 @@
 			this.tabPageGroups.ResumeLayout(false);
 			this.tabPageGroups.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvGroups)).EndInit();
+			this.menuStrip1.ResumeLayout(false);
+			this.menuStrip1.PerformLayout();
 			this.tabPageDirections.ResumeLayout(false);
 			this.tabPageDirections.PerformLayout();
 			((System.ComponentModel.ISupportInitialize)(this.dgvDirectors)).EndInit();
@@ -369,8 +364,6 @@
 			((System.ComponentModel.ISupportInitialize)(this.dgvDisciplines)).EndInit();
 			this.tabPageTeachers.ResumeLayout(false);
 			((System.ComponentModel.ISupportInitialize)(this.dgvTeachers)).EndInit();
-			this.menuStrip1.ResumeLayout(false);
-			this.menuStrip1.PerformLayout();
 			this.ResumeLayout(false);
 			this.PerformLayout();
 
@@ -397,12 +390,11 @@
 		private System.Windows.Forms.ComboBox comboBoxStudentsDirections;
 		private System.Windows.Forms.ComboBox comboBoxStudentsGroups;
 		private System.Windows.Forms.Label labelStudentsDirections;
-		public System.Windows.Forms.CheckBox checkBoxEmptyGroups;
+		private System.Windows.Forms.CheckBox checkBoxEmptyGroups;
 		private System.Windows.Forms.CheckBox checkBoxEmptyDirections;
 		private System.Windows.Forms.MenuStrip menuStrip1;
 		private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
 		private System.Windows.Forms.ToolStripMenuItem addGroupToolStripMenuItem;
-		private System.Windows.Forms.ToolStripMenuItem changeToolStripMenuItem;
 		private System.Windows.Forms.ToolStripMenuItem deleteToolStripMenuItem;
 	}
 }
