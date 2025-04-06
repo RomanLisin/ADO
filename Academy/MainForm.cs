@@ -108,7 +108,8 @@ namespace Academy
 		}
 		private void comboBoxStudentsDirections_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			if (comboBoxStudentsDirections.SelectedItem.ToString() == "All directions")
+			string directionName = comboBoxStudentsDirections.SelectedItem.ToString().Replace("'", "''");
+			if (directionName == "All directions")
 			{
 				comboBoxStudentsGroups.DataSource = null;  // Отключаем привязку данных, без этого ошибка:
 				comboBoxStudentsGroups.SelectedItem = null;
@@ -122,12 +123,72 @@ namespace Academy
 					"group_name",
 					"Students, Groups, Directions",
 					$"direction=direction_id AND [group] = group_id AND " +
-					$"direction_name ='{comboBoxStudentsDirections.SelectedItem.ToString().Replace("'", "''")}'",
+					$"direction_name ='{directionName}'",
 					"group_id, group_name, direction_name"
 				);
 				comboBoxStudentsGroups.DisplayMember = "group_name";
+				comboBoxStudentsGroups.SelectedItem = null;
+				dgvStudents.DataSource = connector.Select(
+					"stud_id, last_name, first_name, middle_name, birth_date, group_name",
+					"Students, Groups, Directions",
+					$"direction=direction_id AND [group] = group_id AND direction_name = '{directionName}'" //,
+					//"group_id, group_name, direction_name"
+				);
+				//tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
+				}
+				//// Получаем название направления
+				//string directionName = comboBoxStudentsDirections.SelectedItem.ToString().Replace("'", "''");
+
+				//// Проверка на "Все направления"
+				//if (directionName == "All directions")
+				//{
+				//	comboBoxStudentsGroups.DataSource = null;
+				//	comboBoxStudentsGroups.SelectedItem = null;
+				//	dgvStudents.DataSource = null; // очищаем студентов тоже
+				//	tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
+				//	return;
+				//}
+
+				//// Получаем группы по выбранному направлению
+				//DataTable groups = connector.Select(
+				//	"group_id, group_name, direction_name",
+				//	"Groups INNER JOIN Directions ON Groups.direction = Directions.direction_id",
+				//	$"Directions.direction_name = '{directionName}'",
+				//	"Groups.group_id, Groups.group_name, Directions.direction_name"
+				//);
+
+				//// Привязываем к ComboBox
+				//comboBoxStudentsGroups.DataSource = groups;
+				//comboBoxStudentsGroups.DisplayMember = "group_name";
+				//comboBoxStudentsGroups.ValueMember = "group_id";
+				//comboBoxStudentsGroups.SelectedItem = null;
+
+				//// Собираем список group_id для фильтрации студентов
+				//List<string> groupIds = new List<string>();
+				//foreach (DataRow row in groups.Rows)
+				//{
+				//	groupIds.Add(row["group_id"].ToString());
+				//}
+
+				//// Если группы есть — подгружаем студентов
+				//if (groupIds.Count > 0)
+				//{
+				//	string groupIdFilter = string.Join(", ", groupIds);
+
+				//	dgvStudents.DataSource = connector.Select(
+				//		"Groups.group_id, group_name, COUNT(stud_id) AS students_count, direction_name",
+				//		"Students, Groups, Directions",
+				//		$"direction = direction_id AND [group] = group_id AND group_id IN ({groupIdFilter})",
+				//		"group_id, group_name, direction_name"
+				//	);
+				//}
+				//else
+				//{
+				//	dgvStudents.DataSource = null;
+				//}
+
+				//tabControl_SelectedIndexChanged(tabControl, EventArgs.Empty);
 			}
-		}
 		private void comboBoxGroupsDirection_SelectedIndexChanged(object sender, EventArgs e)
 		{
 			if (comboBoxGroupsDirection.SelectedItem == null) return;
