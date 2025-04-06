@@ -72,6 +72,7 @@
 			this.buttonGroupAddCancel.TabIndex = 3;
 			this.buttonGroupAddCancel.Text = "Cancel";
 			this.buttonGroupAddCancel.UseVisualStyleBackColor = true;
+			this.buttonGroupAddCancel.Click += new System.EventHandler(this.buttonGroupAddCancel_Click);
 			// 
 			// comboBoxSelectDirection
 			// 

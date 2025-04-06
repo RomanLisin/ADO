@@ -60,5 +60,10 @@ namespace Academy
 			parentForm.RefreshGroups();
 			this.Close();
 		}
+
+		private void buttonGroupAddCancel_Click(object sender, EventArgs e)
+		{
+			this.Close();
+		}
 	}
 }
