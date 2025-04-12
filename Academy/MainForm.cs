@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 using System.Configuration;
+using System.Xml.Linq;
 
 namespace Academy
 {
@@ -73,7 +74,7 @@ namespace Academy
 			statusStripCountLabel.Text = $"Количество студентов: {dgvStudents.RowCount - 1}";
 
 			d_directions = connector.GetDictionary("Directions");
-			d_groups = connector.GetDictionary("Groups");
+			d_groups = connector.GetDictionaryRef("Groups", "Directions");
 			cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key.ToString()).ToArray());
 			cbStudentsDirection.Items.AddRange(d_directions.Select(d => d.Key.ToString()).ToArray());  // LINQ
 			cbGroupsDirection.Items.AddRange(d_directions.Select(d => d.Key.ToString()).ToArray());   // LINQ
@@ -104,12 +105,17 @@ namespace Academy
 			string member_name = $"d_{field_name.ToLower()}s";
 			Dictionary<string, int> source = this.GetType().GetProperty(member_name).GetValue(this) as Dictionary<string, int>;  // это код получает доступ к полю текущего класса по имени, которое хранится в переменной member_name, извлекает значение этого поля, пытается интерпретировать это значение, как словарь
 			if (query.Condition != "") query.Condition += " AND";
-            query.Condition += $" [{field_name.ToLower()}] = {source[(sender as ComboBox).SelectedItem.ToString()]}";
+            query.Condition += $" [{field_name.ToLower()}] = {source[(sender as ComboBox).SelectedItem.ToString()]}"; /**/
+			if(IsRefTable("Groups") && cbStudentsDirection.SelectedItem != null) query.Condition += $" AND {d_groups[,cbStudentsDirection.SelectedIndex]}";
 			LoadTab(query);
             Console.WriteLine((sender as ComboBox).Name);
             Console.WriteLine(e);
         }
-
-	
+		private bool IsRefTable(string table)
+		{
+			Query query = new Query("[name] ", "sys.foreign_keys", "[name] = 'FK_Groups_Directions'");
+			if (connector.Select(query.Columns, query.Tables, query.Condition) != null) return true;
+			else return false;
+		}
 	}
 }
