@@ -53,8 +53,8 @@ namespace Academy
 		/// /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// <summary>
 		// TODO: Apply encapsulation:
 		//public Dictionary<string, int> d_groups{get; private set;};
-		public Dictionary<string, int> d_directions; //  need TODO with this variant -> { get; private set; }
-		public  Dictionary<string, int> d_groups; // { get; private set; }
+		public Dictionary<string, int> d_directions { get; private set; }
+		public  Dictionary<string, int> d_groups { get; private set; }
 
 		//public Dictionary<string, int> d_group { get; private set; }
 		public MainForm()
@@ -102,7 +102,7 @@ namespace Academy
 			string field_name = tab_name.Substring(Array.FindLastIndex<char>(tab_name.ToCharArray(), Char.IsUpper));
             Console.WriteLine(field_name);
 			string member_name = $"d_{field_name.ToLower()}s";
-			Dictionary<string, int> source = this.GetType().GetField(member_name).GetValue(this) as Dictionary<string, int>;  // это код получает доступ к полю текущего класса по имени, которое хранится в переменной member_name, извлекает значение этого поля, пытается интерпретировать это значение, как словарь
+			Dictionary<string, int> source = this.GetType().GetProperty(member_name).GetValue(this) as Dictionary<string, int>;  // это код получает доступ к полю текущего класса по имени, которое хранится в переменной member_name, извлекает значение этого поля, пытается интерпретировать это значение, как словарь
 			if (query.Condition != "") query.Condition += " AND";
             query.Condition += $" [{field_name.ToLower()}] = {source[(sender as ComboBox).SelectedItem.ToString()]}";
 			LoadTab(query);
