@@ -82,6 +82,28 @@ namespace Academy
 			return dictionary;
 		}
 
+		public Dictionary<string, int> GetRefDictionary(int selectItem)
+		{
+			Dictionary<string, int> d_result = new Dictionary<string, int>();
+			Query query = new Query("group_name", "Groups JOIN Directions ON direction = direction_id");
+			string cmd = $"SELECT group_name, group_id FROM Groups JOIN Directions ON direction = direction_id WHERE direction = {selectItem}";
+			SqlCommand command = new SqlCommand(cmd, connection);
+			connection.Open();
+			SqlDataReader reader = command.ExecuteReader();
+			if (reader.HasRows)
+			{
+				//d_result = new Dictionary<string, int>();
+				while (reader.Read())
+				{
+					d_result[reader[0].ToString()] = Convert.ToInt32(reader[1]);
+				}
+			}
+			reader.Close();
+			connection.Close();
+			return d_result;
+
+		}
+
 		[DllImport("kernel32.dll")]
 		public static extern bool AllocConsole();
 		[DllImport("kernel32.dll")]
