@@ -10,6 +10,7 @@ using System.Windows.Forms;
 
 using System.Configuration;
 using System.Xml.Linq;
+using System.Data.Odbc;
 
 namespace Academy
 {
@@ -55,7 +56,7 @@ namespace Academy
 		// TODO: Apply encapsulation:
 		//public Dictionary<string, int> d_groups{get; private set;};
 		public Dictionary<string, int> d_directions { get; private set; }
-		public  Dictionary<string, int> d_groups { get; private set; }
+		public Dictionary<string, int> d_groups { get; private set; }
 
 		//public Dictionary<string, int> d_group { get; private set; }
 		public MainForm()
@@ -101,21 +102,36 @@ namespace Academy
 			Console.WriteLine(query.Condition);
 			string tab_name = (sender as ComboBox).Name;
 			string field_name = tab_name.Substring(Array.FindLastIndex<char>(tab_name.ToCharArray(), Char.IsUpper));
-            Console.WriteLine(field_name);
+			Console.WriteLine(field_name);
 			string member_name = $"d_{field_name.ToLower()}s";
 			Dictionary<string, int> source = this.GetType().GetProperty(member_name).GetValue(this) as Dictionary<string, int>;  // это код получает доступ к полю текущего класса по имени, которое хранится в переменной member_name, извлекает значение этого поля, пытается интерпретировать это значение, как словарь
 			if (query.Condition != "") query.Condition += " AND";
-            query.Condition += $" [{field_name.ToLower()}] = {source[(sender as ComboBox).SelectedItem.ToString()]}"; /**/
-			if(IsRefTable("Groups") && cbStudentsDirection.SelectedItem != null) query.Condition += $" AND {d_groups[,cbStudentsDirection.SelectedIndex]}";
+			if (IsRefTable("Groups") && cbStudentsDirection.SelectedItem != null) query.Condition += $" [{field_name.ToLower()}] = {source[(sender as ComboBox).SelectedItem.ToString()]}"; /**/
+
+			//query.Condition += $" AND [Groups].direction = [Directions].direction_id";
 			LoadTab(query);
-            Console.WriteLine((sender as ComboBox).Name);
-            Console.WriteLine(e);
-        }
+			Console.WriteLine((sender as ComboBox).Name);
+			Console.WriteLine(e);
+		}
 		private bool IsRefTable(string table)
 		{
 			Query query = new Query("[name] ", "sys.foreign_keys", "[name] = 'FK_Groups_Directions'");
 			if (connector.Select(query.Columns, query.Tables, query.Condition) != null) return true;
 			else return false;
+		}
+
+		private Dictionary<string,int> SelectDict(Dictionary<string, int> d_groups, Dictionary<string,int> d_directions)
+		{
+			Dictionary<string, int> d_result = new Dictionary<string, int>();
+			string direction = cbStudentsDirection.Text;
+			if (d_directions.TryGetValue(direction, out int direction_id))
+			{
+				// Ищем все группы с таким номером:
+				d_result = d_groups
+				.Where(kv => kv.Value == direction_id)
+				.ToDictionary(kv => kv.Key, kv => kv.Value);
+			}
+			return d_result;
 		}
 	}
 }
