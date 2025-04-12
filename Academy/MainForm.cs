@@ -120,10 +120,10 @@ namespace Academy
 			else return false;
 		}
 
-		private Dictionary<string,int> SelectDict(Dictionary<string, int> d_groups, Dictionary<string,int> d_directions)
+		private Dictionary<string,int> SelectDict(Dictionary<string, int> d_groups, Dictionary<string,int> d_directions, string direction)
 		{
 			Dictionary<string, int> d_result = new Dictionary<string, int>();
-			string direction = cbStudentsDirection.Text;
+			//string direction = cbStudentsDirection.Text;
 			if (d_directions.TryGetValue(direction, out int direction_id))
 			{
 				// Ищем все группы с таким номером:
