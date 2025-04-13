@@ -116,7 +116,7 @@ namespace Academy
 			{
 				d_groups.Clear();
 				//d_groups = SelectDict(d_directions, d_groups, SelectItem);
-				d_groups = connector.GetRefDictionary(source[SelectItem]);
+				d_groups = connector.GetDictionary("Groups", $"SELECT group_name, group_id FROM Groups JOIN Directions ON direction = direction_id WHERE direction = {source[SelectItem]}");
 			}
 			cbStudentsGroup.Items.Clear();
 			cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key.ToString()).ToArray());
@@ -125,9 +125,25 @@ namespace Academy
             Console.WriteLine(e);
         }
 
+		private bool FindControl(Control.ControlCollection controls, string name)
+		{
+			foreach(Control control in controls)
+			{
+				if (control.Name == name) return true;
+			}
+			return false;
+		}
+
+		private bool RefTable(string table)
+		{
+			Query query = new Query(" OBJECT_NAME(FK.parent_object_id)", "sys.foreign_keys AS FK", " FK.referenced_object_id = OBJECT_ID('Directions') AND FK.parent_object_id = OBJECT_ID('Groups');");
+			if (connector.Select(query.Columns, query.Tables, query.Condition).ToString() != "") return true;
+			return false;
+		}
 
 
-	
+
+
 		private Dictionary<string, int> SelectDict(Dictionary<string, int> d_groups, Dictionary<string, int> d_directions, string direction)
 		{
 			Dictionary<string, int> d_result = new Dictionary<string, int>();

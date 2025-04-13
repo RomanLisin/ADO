@@ -60,12 +60,14 @@ namespace Academy
 			connection.Close();
 			return table;
 		}
-		public Dictionary<string,int> GetDictionary(string table)
+		public Dictionary<string,int> GetDictionary(string table, string query = "")
 		{
 			Dictionary<string, int> dictionary = null;
 			string id_column = table.ToLower().Remove(table.Length - 1) + "_id";
 			string name_column = table.ToLower().Remove(table.Length - 1, 1) + "_name";      // name_column[name_column.Length - 1] = '_';
-			string cmd = $"SELECT {name_column}, {id_column} FROM {table}";
+			string cmd = "";
+			if (query == "") cmd = $"SELECT {name_column}, {id_column} FROM {table}";
+			else cmd = query;
 			SqlCommand command = new SqlCommand(cmd, connection);
 			connection.Open();
 			SqlDataReader reader = command.ExecuteReader();
@@ -81,29 +83,7 @@ namespace Academy
 			connection.Close();
 			return dictionary;
 		}
-
-		public Dictionary<string, int> GetRefDictionary(int selectItem)
-		{
-			Dictionary<string, int> d_result = new Dictionary<string, int>();
-			Query query = new Query("group_name", "Groups JOIN Directions ON direction = direction_id");
-			string cmd = $"SELECT group_name, group_id FROM Groups JOIN Directions ON direction = direction_id WHERE direction = {selectItem}";
-			SqlCommand command = new SqlCommand(cmd, connection);
-			connection.Open();
-			SqlDataReader reader = command.ExecuteReader();
-			if (reader.HasRows)
-			{
-				//d_result = new Dictionary<string, int>();
-				while (reader.Read())
-				{
-					d_result[reader[0].ToString()] = Convert.ToInt32(reader[1]);
-				}
-			}
-			reader.Close();
-			connection.Close();
-			return d_result;
-
-		}
-
+	
 		[DllImport("kernel32.dll")]
 		public static extern bool AllocConsole();
 		[DllImport("kernel32.dll")]
