@@ -103,42 +103,71 @@ namespace Academy
 			Console.WriteLine(query.Condition);
 			string tab_name = (sender as ComboBox).Name;
 			string field_name = tab_name.Substring(Array.FindLastIndex<char>(tab_name.ToCharArray(), Char.IsUpper));
-            Console.WriteLine(field_name);
+            Console.WriteLine($"field_name = {field_name}");
 			string member_name = $"d_{field_name.ToLower()}s";
 			Dictionary<string, int> source = this.GetType().GetProperty(member_name).GetValue(this) as Dictionary<string, int>;  // это код получает доступ к полю текущего класса по имени, которое хранится в переменной member_name, извлекает значение этого поля, пытается интерпретировать это значение, как словарь
 			if (query.Condition != "") query.Condition += " AND";
 
 			string SelectItem = (sender as ComboBox).SelectedItem.ToString();
-
+			if (source != null)
 			query.Condition += $" [{field_name.ToLower()}] = {source[SelectItem]}";
 			LoadTab(query);
-			if (member_name == "d_directions")
+			string checkTable = $"{field_name}s";
+			string refTable = RefTable(checkTable);
+			Console.WriteLine($"checkTable = {checkTable}");
+			Console.WriteLine($"refTable = {refTable}");
+			Control.ControlCollection controls = tabControl.SelectedTab.Controls;
+			string cbControlName = FindControl(controls, refTable);
+			Console.WriteLine($"Findcontrol = {cbControlName}");
+			foreach (var kvp in source)
 			{
-				d_groups.Clear();
-				//d_groups = SelectDict(d_directions, d_groups, SelectItem);
-				d_groups = connector.GetDictionary("Groups", $"SELECT group_name, group_id FROM Groups JOIN Directions ON direction = direction_id WHERE direction = {source[SelectItem]}");
+				Console.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
+			}
+			if (/*member_name == "d_directions" && */refTable != "" && cbControlName != "" && refTable != checkTable) //&& FindControl(controls, refTable)!="")///*/*refTable != "" &&*/ cbControlName != "" || refTable != checkTable)//*/
+			{
+				if (source != null)
+				{
+					Console.WriteLine("d_groups != null");/* return;*/
+					d_groups.Clear();
+					//d_groups = SelectDict(d_directions, d_groups, SelectItem);
+					d_groups = connector.GetDictionary(refTable, $"SELECT group_name, group_id FROM Groups JOIN Directions ON direction = direction_id WHERE direction = {source[SelectItem]}");
+				}
 			}
 			cbStudentsGroup.Items.Clear();
 			cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key.ToString()).ToArray());
-			cbStudentsGroup.Refresh();
+			//cbStudentsGroup.Refresh();
+
 			Console.WriteLine((sender as ComboBox).Name);
             Console.WriteLine(e);
         }
 
-		private bool FindControl(Control.ControlCollection controls, string name)
+		private string FindControl(Control.ControlCollection controls, string name)
 		{
-			foreach(Control control in controls)
+			string controlName;
+			string checkName;
+			controlName = tabControl.SelectedTab.Name.Substring(Array.FindLastIndex<char>(tabControl.SelectedTab.Name.ToCharArray(), Char.IsUpper));
+			controlName = controlName.Substring(Array.FindLastIndex<char>(controlName.ToCharArray(), Char.IsUpper));
+			controlName = $"cb{controlName}{name}";
+			controlName = controlName.Remove(controlName.Length - 1);
+			Console.WriteLine($"controlName = {controlName}");
+			foreach (Control control in controls)
 			{
-				if (control.Name == name) return true;
+				checkName = control.Name;
+                Console.WriteLine($"checkName = {checkName}");
+                if (checkName == controlName) return controlName;
 			}
-			return false;
+			return "";
 		}
 
-		private bool RefTable(string table)
+		private string RefTable(string table)
 		{
 			Query query = new Query(" OBJECT_NAME(FK.parent_object_id)", "sys.foreign_keys AS FK", " FK.referenced_object_id = OBJECT_ID('Directions') AND FK.parent_object_id = OBJECT_ID('Groups');");
-			if (connector.Select(query.Columns, query.Tables, query.Condition).ToString() != "") return true;
-			return false;
+			DataTable dt = connector.Select(query.Columns, query.Tables, query.Condition);
+			if(dt.Rows.Count > 0)
+			{
+				return dt.Rows[0][0].ToString();
+			}
+			return "";
 		}
 
 
