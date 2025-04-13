@@ -103,18 +103,21 @@ namespace Academy
 			Console.WriteLine(query.Condition);
 			string tab_name = (sender as ComboBox).Name;
 			string field_name = tab_name.Substring(Array.FindLastIndex<char>(tab_name.ToCharArray(), Char.IsUpper));
-            Console.WriteLine(field_name);
+			
+			if (field_name != "Direction" || field_name != "Groups")field_name = "Direction";
+			Console.WriteLine(field_name);
+
 			string member_name = $"d_{field_name.ToLower()}s";
+
 			Dictionary<string, int> source = this.GetType().GetProperty(member_name).GetValue(this) as Dictionary<string, int>;  // это код получает доступ к полю текущего класса по имени, которое хранится в переменной member_name, извлекает значение этого поля, пытается интерпретировать это значение, как словарь
 			if (query.Condition != "") query.Condition += " AND";
 
 			string SelectItem = (sender as ComboBox).SelectedItem.ToString();
-
-			query.Condition += $" [{field_name.ToLower()}] = {source[SelectItem]}";
+			query.Condition += $" [{field_name.ToLower()}] = {source[SelectItem]}"; // {source[SelectItem]}";
 			LoadTab(query);
 			if (member_name == "d_directions")
 			{
-				d_groups.Clear();
+					d_groups.Clear();
 				//d_groups = SelectDict(d_directions, d_groups, SelectItem);
 				d_groups = connector.GetDictionary("Groups", $"SELECT group_name, group_id FROM Groups JOIN Directions ON direction = direction_id WHERE direction = {source[SelectItem]}");
 			}
