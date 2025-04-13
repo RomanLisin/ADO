@@ -103,13 +103,14 @@ namespace Academy
 			Console.WriteLine(query.Condition);
 			string tab_name = (sender as ComboBox).Name;
 			string field_name = tab_name.Substring(Array.FindLastIndex<char>(tab_name.ToCharArray(), Char.IsUpper));
+			if (field_name != "Direction" && field_name != "Group") field_name = "Direction";
             Console.WriteLine($"field_name = {field_name}");
 			string member_name = $"d_{field_name.ToLower()}s";
 			Dictionary<string, int> source = this.GetType().GetProperty(member_name).GetValue(this) as Dictionary<string, int>;  // это код получает доступ к полю текущего класса по имени, которое хранится в переменной member_name, извлекает значение этого поля, пытается интерпретировать это значение, как словарь
 			if (query.Condition != "") query.Condition += " AND";
 
 			string SelectItem = (sender as ComboBox).SelectedItem.ToString();
-			if (source != null)
+			//if (source[SelectItem] != null)
 			query.Condition += $" [{field_name.ToLower()}] = {source[SelectItem]}";
 			LoadTab(query);
 			string checkTable = $"{field_name}s";
@@ -119,23 +120,23 @@ namespace Academy
 			Control.ControlCollection controls = tabControl.SelectedTab.Controls;
 			string cbControlName = FindControl(controls, refTable);
 			Console.WriteLine($"Findcontrol = {cbControlName}");
-			foreach (var kvp in source)
+			//foreach (var kvp in source)
+			//{
+			//	Console.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
+			//}
+			if (refTable != checkTable) //(/*member_name == "d_directions" && */refTable != "" && cbControlName != "" && refTable != checkTable) //&& FindControl(controls, refTable)!="")///*/*refTable != "" &&*/ cbControlName != "" || refTable != checkTable)//*/
 			{
-				Console.WriteLine($"Key: {kvp.Key}, Value: {kvp.Value}");
-			}
-			if (/*member_name == "d_directions" && */refTable != "" && cbControlName != "" && refTable != checkTable) //&& FindControl(controls, refTable)!="")///*/*refTable != "" &&*/ cbControlName != "" || refTable != checkTable)//*/
-			{
-				if (source != null)
-				{
+				//if (source != null)
+				//{
 					Console.WriteLine("d_groups != null");/* return;*/
 					d_groups.Clear();
-					//d_groups = SelectDict(d_directions, d_groups, SelectItem);
+				//if (source[SelectItem] != null)
 					d_groups = connector.GetDictionary(refTable, $"SELECT group_name, group_id FROM Groups JOIN Directions ON direction = direction_id WHERE direction = {source[SelectItem]}");
-				}
+				//}
 			}
 			cbStudentsGroup.Items.Clear();
 			cbStudentsGroup.Items.AddRange(d_groups.Select(g => g.Key.ToString()).ToArray());
-			//cbStudentsGroup.Refresh();
+			cbStudentsGroup.Refresh();
 
 			Console.WriteLine((sender as ComboBox).Name);
             Console.WriteLine(e);
