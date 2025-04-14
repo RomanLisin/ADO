@@ -114,38 +114,38 @@ namespace AcademyDataSet
 		public void Print(string table)
 		{
             Console.WriteLine(table);
-            Console.WriteLine("\n===================================================\n");
+            Console.WriteLine("\n========================================================\n");
 			for (int i = 0; i < GroupsRelatedData.Tables[table].Columns.Count; i++)
-				Console.WriteLine(GroupsRelatedData.Tables[table].Columns[i].Caption + "\t") ;
-            Console.WriteLine("\n---------------------------------------------------\n");
+				Console.Write(GroupsRelatedData.Tables[table].Columns[i].Caption + "\t") ;
+            Console.WriteLine("\n--------------------------------------------------------\n");
 
             for (int i=0; i < GroupsRelatedData.Tables[table].Rows.Count; i++)
 			{
 				//Console.WriteLine(GroupsRelatedData.Tables[table].Rows[i] + ":\t");
 				for(int j=0; j < GroupsRelatedData.Tables[table].Columns.Count; j++)
 				{
-					Console.WriteLine(GroupsRelatedData.Tables[table].Rows[i][j]+ "\t\t");
+					Console.Write(GroupsRelatedData.Tables[table].Rows[i][j]+ "\t\t");
                 }
                 Console.WriteLine();
             }
-            Console.WriteLine("\n====================================================\n");
+            Console.WriteLine("\n========================================================\n");
 
         }
 
 		void PrintGroups()
 		{
-			Console.WriteLine("\n=================================================\n");
+			Console.WriteLine("\n========================================================\n");
 			string table = "Groups";
 			for (int i = 0; i < GroupsRelatedData.Tables[table].Rows.Count; i++)
 			{
 				for(int j=0; j < GroupsRelatedData.Tables[table].Columns.Count; j++)
 				{
-					Console.WriteLine(GroupsRelatedData.Tables[table].Rows[i][j] + "\t") ;
+					Console.Write(GroupsRelatedData.Tables[table].Rows[i][j] + "\t") ;
                 }
 				Console.WriteLine(GroupsRelatedData.Tables[table].Rows[i].GetParentRow("GroupsDirections")["direction_name"]);
                 Console.WriteLine();
             }
-            Console.WriteLine("\n==================================================\n");
+            Console.WriteLine("\n========================================================\n");
         }
 		[DllImport("kernel32.dll")]
 		public static extern bool AllocConsole();
