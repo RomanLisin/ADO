@@ -32,6 +32,7 @@ namespace AcademyDataSet
 			AddTable("Groups", "group_id,group_name,direction");
 			AddRelation("GroupsDirections", "Groups,direction", "Directions,direction_id");
 			PrintGroups();
+			Print("Groups");
 			//LoadGroupRelatedData();
         }
 		public void AddTable(string table, string columns)
@@ -111,12 +112,17 @@ namespace AcademyDataSet
 			Print("Directions");
 			Print("Groups");
 		}
+			//1.Функция Print() должна самостоятельно определять, есть ли у столбца 
+			//родитель, и если он есть, то нужно вывести соответствующее поле из
+			//родительской таблицы
 		public void Print(string table)
 		{
             Console.WriteLine(table);
             Console.WriteLine("\n========================================================\n");
 			for (int i = 0; i < GroupsRelatedData.Tables[table].Columns.Count; i++)
-				Console.Write(GroupsRelatedData.Tables[table].Columns[i].Caption + "\t") ;
+			{
+                Console.Write(GroupsRelatedData.Tables[table].Columns[i].Caption + "\t");
+            }
             Console.WriteLine("\n--------------------------------------------------------\n");
 
             for (int i=0; i < GroupsRelatedData.Tables[table].Rows.Count; i++)
@@ -129,8 +135,15 @@ namespace AcademyDataSet
                 Console.WriteLine();
             }
             Console.WriteLine("\n========================================================\n");
-
-        }
+			for (int i = 0; i < GroupsRelatedData.Tables[table].Columns.Count; i++)
+			{
+				string parentColumn = GetParentColumnName(GroupsRelatedData.Tables[table].Columns[i]);
+				Console.Write(GroupsRelatedData.Tables[table].Columns[i].Caption + "\t");
+				if (parentColumn != null) Console.Write(parentColumn); else Console.Write("No parent column");
+				Console.WriteLine();
+			}
+			Console.WriteLine("\n--------------------------------------------------------\n");
+		}
 
 		void PrintGroups()
 		{
@@ -147,6 +160,23 @@ namespace AcademyDataSet
             }
             Console.WriteLine("\n========================================================\n");
         }
+		
+		//*ChildColumn -> ParentColumn*/ находим родительскую колонку в другой таблице по дочерней колонке в таблице, которую передаем в качестве первого параметра
+		public string GetParentColumnName(DataColumn childColumn)
+		{
+			foreach (DataRelation relation in childColumn.Table.ParentRelations)
+			{
+				for (int i = 0; i < relation.ChildColumns.Length; i++)
+				{
+					if (relation.ChildColumns[i] == childColumn)
+					{
+						return relation.ParentColumns[i].ColumnName;
+					}
+				}
+			}
+			return null; // если не найдено
+		}
+
 		[DllImport("kernel32.dll")]
 		public static extern bool AllocConsole();
 		[DllImport("kernel32.dll")]
