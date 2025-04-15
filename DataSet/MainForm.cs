@@ -33,7 +33,7 @@ namespace AcademyDataSet
 			AddRelation("GroupsDirections", "Groups,direction", "Directions,direction_id");
 			PrintGroups();
 			//LoadGroupRelatedData();
-        }
+		}
 		public void AddTable(string table, string columns)
 		{
 			//2.1)Добавляем таблицу в DataSet
