@@ -17,56 +17,27 @@ namespace AcademyDataSet
 	public partial class MainForm : Form
 	{
 		readonly string CONNECTION_STRING = "";
-		SqlConnection connection = null;
-		DataSet GroupsRelatedData = null;
+		Cache GroupsRelatedData = null;
 		public MainForm()
 		{
 			InitializeComponent();
 			CONNECTION_STRING = ConfigurationManager.ConnectionStrings["VPD_311_Import"].ConnectionString;
-			connection = new SqlConnection(CONNECTION_STRING);
+			
 			AllocConsole();
             Console.WriteLine(CONNECTION_STRING);
 			//1 Создаем DataSet
-			GroupsRelatedData = new DataSet();
-			AddTable("Directions", "direction_id,direction_name");
-			AddTable("Groups", "group_id,group_name,direction");
-			AddRelation("GroupsDirections", "Groups,direction", "Directions,direction_id");
+			GroupsRelatedData = new Cache(CONNECTION_STRING);
+			GroupsRelatedData.AddTable("Directions", "direction_id,direction_name");
+			GroupsRelatedData.AddTable("Groups", "group_id,group_name,direction");
+			GroupsRelatedData.AddRelation("GroupsDirections", "Groups,direction", "Directions,direction_id");
 			PrintGroups();
-			Print("Groups");
+			GroupsRelatedData.Print("Groups");
 			//LoadGroupRelatedData();
         }
-		public void AddTable(string table, string columns)
-		{
-			//2.1)Добавляем таблицу в DataSet
-			GroupsRelatedData.Tables.Add(table);
-
-			//2.2) Добавляем поля (столбики) в таблицу:
-			string[] a_columns = columns.Split(',');
-			for(int i=0; i<a_columns.Length; i++)
-			{
-				GroupsRelatedData.Tables[table].Columns.Add(a_columns[i]);
-			}
-			// 2.3) Определяем, какое поле будет первичным ключом:
-			GroupsRelatedData.Tables[table].PrimaryKey =
-				new DataColumn[] { GroupsRelatedData.Tables[table].Columns[0] };
-
-			string cmd = $"SELECT {columns} FROM {table}";
-			SqlDataAdapter adapter = new SqlDataAdapter(cmd, connection);
-			adapter.Fill(GroupsRelatedData.Tables[table]);
-			Print(table);
-		}
-		public void AddRelation(string relation_name, string child, string parent)
-		{
-			GroupsRelatedData.Relations.Add
-				(
-					relation_name,
-					GroupsRelatedData.Tables[parent.Split(',')[0]].Columns[parent.Split(',')[1]],
-					GroupsRelatedData.Tables[child.Split(',')[0]].Columns[child.Split(',')[1]]
-				);
-		}
+	
 		void LoadGroupRelatedData()
 		{
-			GroupsRelatedData = new DataSet();
+			//GroupsRelatedData = new DataSet();
 			//1 Создаем DataSet
 
 			//2)Добавляем таблицы в DataSet
@@ -103,47 +74,19 @@ namespace AcademyDataSet
 			//4 Загрузка данных в DataSet
 			string directionsCmd = "SELECT * FROM Directions";
 			string groupsCmd = "SELECT * FROM Groups";
-			SqlDataAdapter directionsAdapter = new SqlDataAdapter(directionsCmd, connection);
-			SqlDataAdapter groupsAdapter = new SqlDataAdapter(groupsCmd, connection);
+			//SqlDataAdapter directionsAdapter = new SqlDataAdapter(directionsCmd, connection);
+			//SqlDataAdapter groupsAdapter = new SqlDataAdapter(groupsCmd, connection);
 
-			directionsAdapter.Fill(GroupsRelatedData.Tables[dsTable_Directions]);
-			groupsAdapter.Fill(GroupsRelatedData.Tables[dsTable_Groups]);
+			//directionsAdapter.Fill(GroupsRelatedData.Tables[dsTable_Directions]);
+			//groupsAdapter.Fill(GroupsRelatedData.Tables[dsTable_Groups]);
 
-			Print("Directions");
-			Print("Groups");
+			//Print("Directions");
+			//Print("Groups");
 		}
 			//1.Функция Print() должна самостоятельно определять, есть ли у столбца 
 			//родитель, и если он есть, то нужно вывести соответствующее поле из
 			//родительской таблицы
-		public void Print(string table)
-		{
-            Console.WriteLine(table);
-            Console.WriteLine("\n========================================================\n");
-			for (int i = 0; i < GroupsRelatedData.Tables[table].Columns.Count; i++)
-			{
-                Console.Write(GroupsRelatedData.Tables[table].Columns[i].Caption + "\t");
-            }
-            Console.WriteLine("\n--------------------------------------------------------\n");
-
-            for (int i=0; i < GroupsRelatedData.Tables[table].Rows.Count; i++)
-			{
-				//Console.WriteLine(GroupsRelatedData.Tables[table].Rows[i] + ":\t");
-				for(int j=0; j < GroupsRelatedData.Tables[table].Columns.Count; j++)
-				{
-					Console.Write(GroupsRelatedData.Tables[table].Rows[i][j]+ "\t\t");
-                }
-                Console.WriteLine();
-            }
-            Console.WriteLine("\n========================================================\n");
-			for (int i = 0; i < GroupsRelatedData.Tables[table].Columns.Count; i++)
-			{
-				string parentColumn = GetParentColumnName(GroupsRelatedData.Tables[table].Columns[i]);
-				Console.Write(GroupsRelatedData.Tables[table].Columns[i].Caption + "\t");
-				if (parentColumn != null) Console.Write(parentColumn); else Console.Write("No parent column");
-				Console.WriteLine();
-			}
-			Console.WriteLine("\n--------------------------------------------------------\n");
-		}
+		
 
 		void PrintGroups()
 		{
@@ -162,20 +105,7 @@ namespace AcademyDataSet
         }
 		
 		//*ChildColumn -> ParentColumn*/ находим родительскую колонку в другой таблице по дочерней колонке в таблице, которую передаем в качестве первого параметра
-		public string GetParentColumnName(DataColumn childColumn)
-		{
-			foreach (DataRelation relation in childColumn.Table.ParentRelations)
-			{
-				for (int i = 0; i < relation.ChildColumns.Length; i++)
-				{
-					if (relation.ChildColumns[i] == childColumn)
-					{
-						return relation.ParentColumns[i].ColumnName;
-					}
-				}
-			}
-			return null; // если не найдено
-		}
+		
 
 		[DllImport("kernel32.dll")]
 		public static extern bool AllocConsole();
