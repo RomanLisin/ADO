@@ -11,13 +11,46 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Data.SqlClient;
 using System.Configuration;
+using Academy;
+
 
 namespace AcademyDataSet
 {
 	public partial class MainForm : Form
 	{
+		Query query;
 		readonly string CONNECTION_STRING = "";
 		Cache GroupsRelatedData = null;
+
+		//Query[] queries = new Query[]
+		//{
+		//	new Query("*", "Students JOIN Groups ON ([group] = group_id) JOIN Directions ON (direction=direction_id)"),
+		//	new Query("group_id, group_name,COUNT(stud_id) AS students_count,direction_name",
+		//		"Students,Groups,Directions",
+		//		"direction=direction_id AND [group] = group_id",
+		//		"group_id, group_name, direction_name"
+		//		),
+		//	new Query
+		//	(
+		//		@"direction_name, COUNT(DISTINCT group_id) AS N'Количество групп',COUNT (DISTINCT stud_id) AS N'Количество студентов'",
+		//		@" Students JOIN Groups ON ([group] = group_id) RIGHT JOIN Directions ON (direction = direction_id)" ,
+		//		"",  //WHERE
+		//		"direction_name;"
+
+		//		),
+		//	new Query("*", "Disciplines"),
+		//	new Query("*", "Teachers"),
+		//};
+
+		DataGridView[] tables;
+		//string[] status_messages = new string[]
+		//{
+		//	"Количество студентов: ",
+		//	"Количество групп: ",
+		//	"Количество направлений: ",
+		//	"Количество дисциплин: ",
+		//	"Количество преподавателей: ",
+		//};
 		public MainForm()
 		{
 			InitializeComponent();
@@ -25,16 +58,83 @@ namespace AcademyDataSet
 			
 			AllocConsole();
             Console.WriteLine(CONNECTION_STRING);
+			tables = new DataGridView[]
+			{
+				dgvStudents,
+				dgvGroups,
+				dgvDirections,
+				dgvDisciplines,
+				dgvTeachers
+			};
 			//1 Создаем DataSet
 			GroupsRelatedData = new Cache(CONNECTION_STRING);
-			GroupsRelatedData.AddTable("Directions", "direction_id,direction_name");
-			GroupsRelatedData.AddTable("Groups", "group_id,group_name,direction");
+			GroupsRelatedData.AddTable("Directions", "direction_id:int,direction_name:string");
+			GroupsRelatedData.AddTable("Groups", "group_id:int,group_name:string,direction:int");
+			GroupsRelatedData.AddTable("Students", "stud_id:int,last_name:string,first_name:string,middle_name:string,birth_date:datatime,[group]:int");
+			GroupsRelatedData.AddTable("Disciplines", "discipline_id,discipline_name,number_of_lessons");
+			GroupsRelatedData.AddTable("Teachers", "teacher_id,last_name,first_name,middle_name,birth_date,work_since,rate");
 			GroupsRelatedData.AddRelation("GroupsDirections", "Groups,direction", "Directions,direction_id");
-			PrintGroups();
+			GroupsRelatedData.AddRelation("StudentsGroups", "Students,[group]", "Groups,group_id");
+			dgvGroups.DataSource = GroupsRelatedData.Tables["Groups"];
+			dgvDirections.DataSource = GroupsRelatedData.Tables["Directions"];
+			dgvStudents.DataSource = GroupsRelatedData.Tables["Students"];
+			dgvDisciplines.DataSource = GroupsRelatedData.Tables["Disciplines"];
+			dgvTeachers.DataSource = GroupsRelatedData.Tables["Teachers"];
+			cbStudentsDirections.DataSource = cbGroupsDirections.DataSource = GroupsRelatedData.Tables["Directions"];
+															//.AsEnumerable()
+															//.Select(t => t.Field<string>("direction_name"))
+															//.ToList();
+			cbStudentsDirections.DisplayMember = "direction_name";    // что отображать
+			cbStudentsDirections.ValueMember = "direction_id";        // с чем работать
+
 			GroupsRelatedData.Print("Groups");
 			//LoadGroupRelatedData();
         }
-	
+		private void cbStudentsDirections_SelectedIndexChanged(object sender, EventArgs e)
+		{
+
+			if (cbStudentsDirections.SelectedValue == null)
+			{
+				MessageBox.Show("Not select direction");
+				return;
+			}
+			cbStudentsGroups.DataSource = GroupsRelatedData.Tables["Groups"]   // link в синтаксисе методов
+													.AsEnumerable()
+													.Where(t => t.Field<int>("direction") == (int)cbStudentsDirections.SelectedValue)
+													.Select(t => new
+														{
+															GroupName = t.Field<string>("group_name"),
+															GroupId = t.Field<int>("group_id")
+														})
+													.ToList();
+
+			//cbStudentsGroups.DataSource =		from t in GroupsRelatedData.Tables["Groups"].AsEnumerable()  // link в синтаксисе запросов
+			//									where t.Field<int>("direction") == (int)cbStudentsDirections.SelectedValue
+			//									select t.Field<string>("group_name").ToList();
+			cbStudentsGroups.DisplayMember = "GroupName"; // что отображать
+			cbStudentsGroups.ValueMember = "GroupID";   // c чем работать
+
+			//Type columnType = GroupsRelatedData.Tables["Groups"].Columns["direction"].DataType;   // узнать тип колонки
+			//MessageBox.Show($"Тип столбца 'direction': {columnType}");
+			//Console.WriteLine(GroupsRelatedData.Tables["Groups"].Columns["direction"].DataType);
+			var filteredRows = GroupsRelatedData.Tables["Students"]
+														.AsEnumerable()
+														.Where(t => t.Field<int?>("group") == (int?)cbStudentsGroups.SelectedItem);
+			if (filteredRows.Any())
+			{
+				dgvStudents.DataSource = filteredRows.CopyToDataTable();
+			}
+			else
+			{
+				dgvStudents.DataSource = null;
+			}
+			dgvStudents.Refresh();
+			
+			Type columnType = cbStudentsGroups.SelectedValue.GetType();
+			MessageBox.Show($"Type selectedItem: {columnType}");
+			
+		}
+
 		void LoadGroupRelatedData()
 		{
 			//GroupsRelatedData = new DataSet();
@@ -83,11 +183,18 @@ namespace AcademyDataSet
 			//Print("Directions");
 			//Print("Groups");
 		}
-			//1.Функция Print() должна самостоятельно определять, есть ли у столбца 
-			//родитель, и если он есть, то нужно вывести соответствующее поле из
-			//родительской таблицы
-		
+		//1.Функция Print() должна самостоятельно определять, есть ли у столбца 
+		//родитель, и если он есть, то нужно вывести соответствующее поле из
+		//родительской таблицы
 
+		//void LoadTab(Query query = null)
+		//{
+		//	int i = tabControl.SelectedIndex;
+		//	if (query == null) query = queries[i];
+		//	//tables[i].DataSource = GroupsRelatedData.connection.Select(query.Columns, query.Tables, query.Condition, query.GroupBy);
+		//	//statusStripCountLabel.Text = $"{status_messages[i]}  {tables[i].RowCount - 1}";
+
+		//}
 		void PrintGroups()
 		{
 			Console.WriteLine("\n========================================================\n");

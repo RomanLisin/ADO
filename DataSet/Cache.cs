@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -24,15 +25,42 @@ namespace AcademyDataSet
 
 			//2.2) Добавляем поля (столбики) в таблицу:
 			string[] a_columns = columns.Split(',');
-			for (int i = 0; i < a_columns.Length; i++)
-			{
-				this.Tables[table].Columns.Add(a_columns[i]);
+			//for (int i = 0; i < a_columns.Length; i++)
+			//{
+			foreach(var col in a_columns)
+			{ 
+				//Поддержка синтаксиса: "columnName:type"
+				string[] parts = col.Split(':');
+				string columnName = parts[0];
+				Type columnType = typeof(string); // по умолчанию
+				if(parts.Length > 1)
+				{
+					string typeName = parts[1].ToLower();
+					switch (typeName)
+					{
+						case "int":
+						case "int32":
+							columnType = typeof(int);
+							break;
+						case "string":
+							columnType = typeof(string);
+							break;
+						case "datatime":
+							columnType = typeof(DateTime);
+							break;
+						case "bool":
+							columnType = typeof(bool);
+							break;
+					}
+				}
+
+				this.Tables[table].Columns.Add(columnName,columnType);
 			}
 			// 2.3) Определяем, какое поле будет первичным ключом:
 			this.Tables[table].PrimaryKey =
 				new DataColumn[] { this.Tables[table].Columns[0] };
 
-			string cmd = $"SELECT {columns} FROM {table}";
+			string cmd = $"SELECT {string.Join(",",a_columns.Select(c => c.Split(':')[0]))} FROM {table}";
 			SqlDataAdapter adapter = new SqlDataAdapter(cmd, connection);
 			adapter.Fill(this.Tables[table]);
 			Print(table);

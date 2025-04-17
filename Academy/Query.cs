@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Academy
 {
-	internal class Query
+	public class Query
 	{
 		public string Columns { get; set; }
 		public string Tables { get; set; }
