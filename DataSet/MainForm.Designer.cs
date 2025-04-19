@@ -106,6 +106,7 @@
 			this.cbStudentsGroups.Name = "cbStudentsGroups";
 			this.cbStudentsGroups.Size = new System.Drawing.Size(150, 21);
 			this.cbStudentsGroups.TabIndex = 3;
+			this.cbStudentsGroups.SelectedIndexChanged += new System.EventHandler(this.cbStudentsGroups_SelectedIndexChanged);
 			// 
 			// labelStudentsDirection
 			// 

@@ -193,6 +193,44 @@ namespace AcademyDataSet
 										  direction_id = directionRow.Field<int?>("direction_id")
 									  }).AsEnumerable().ToArray();
 		}
+		private void cbStudentsGroups_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (cbStudentsGroups.SelectedValue == null)
+			{
+				MessageBox.Show("Not select direction");
+				return;
+			}
+			int? selectedDirectionId = cbStudentsDirections.SelectedValue as int?;
+			int? selectedGroupId = cbStudentsGroups.SelectedValue as int?;
+
+			if (selectedDirectionId == null || selectedGroupId == null)
+			{
+				//dgvStudents.DataSource = null;
+				Console.WriteLine($"Здесь сработал return из за того, что selectedDirectionId == null || selectedGroupId == null");
+
+
+				return;
+			}
+			Console.WriteLine($"selectedDirectionId = {selectedDirectionId}");
+			Console.WriteLine($"selectedDirectionId = {selectedGroupId}");
+
+			dgvStudents.DataSource = (from student in GroupsRelatedData.Tables["Students"].AsEnumerable()
+									  join groupRow in GroupsRelatedData.Tables["Groups"].AsEnumerable()
+										  .Where(g => g.Field<int?>("group_id") == selectedGroupId)
+										  on student.Field<int?>("group") equals groupRow.Field<int?>("group_id")
+									  join directionRow in GroupsRelatedData.Tables["Directions"].AsEnumerable()
+										  .Where(d => d.Field<int?>("direction_id") == selectedDirectionId)
+										  on groupRow.Field<int?>("direction") equals directionRow.Field<int?>("direction_id")
+									  select new
+									  {
+										  stud_id = student.Field<int>("stud_id"),
+										  last_name = student.Field<string>("last_name"),
+										  first_name = student.Field<string>("first_name"),
+										  group_ = student.Field<int?>("group"),
+										  group_name = groupRow.Field<string>("group_name"),
+										  direction_name = directionRow.Field<string>("direction_name")
+									  }).AsEnumerable().ToArray();
+		}
 		
 		void LoadGroupRelatedData()
 		{
