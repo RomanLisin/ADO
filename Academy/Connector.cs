@@ -11,7 +11,7 @@ using System.Data;
 
 namespace Academy
 {
-	internal class Connector
+	public class Connector
 	{
 		readonly string CONNECTION_STRING;
 		SqlConnection connection;
@@ -23,6 +23,15 @@ namespace Academy
             Console.WriteLine(CONNECTION_STRING);
 
         }
+
+		public SqlConnection GetConnection()
+		{
+			if (connection.State != ConnectionState.Open)
+			{
+				connection.Open();
+			}
+			return connection;
+		}
 		public DataTable Select(string columns, string tables, string condition = "", string group_by = "")
 		{
 			DataTable table = null;

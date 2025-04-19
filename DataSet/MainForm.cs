@@ -19,10 +19,10 @@ namespace AcademyDataSet
 {
 	public partial class MainForm : Form
 	{
-		Query query;
+		//Query query;
 		readonly string CONNECTION_STRING = "";
 		Cache GroupsRelatedData = null;
-
+		
 		//Query[] queries = new Query[]
 		//{
 		//	new Query("*", "Students JOIN Groups ON ([group] = group_id) JOIN Directions ON (direction=direction_id)"),
@@ -118,10 +118,14 @@ namespace AcademyDataSet
 			int? selectedDirectionId = cbStudentsDirections.SelectedValue as int?;
 			int? selectedGroupId = cbStudentsGroups.SelectedValue as int?;
 
-			if (selectedDirectionId == null || selectedGroupId == null)
+			if (/*selectedDirectionId == null ||*/ selectedGroupId == null)
 			{
 				dgvStudents.DataSource = null;
-                Console.WriteLine($"Здесь сработал return из за того, что selectedDirectionId == null || selectedGroupId == null");
+				Console.WriteLine($"Здесь сработал return из за того, что selectedDirectionId == null || selectedGroupId == null");
+				//cbStudentsGroups.Items.Clear();
+				//cbStudentsGroups.SelectedIndex = -1;
+				//cbStudentsGroups.SelectedItem = null;
+				//cbStudentsGroups.SelectedText = "";
 
 				return;
 			}
@@ -168,8 +172,8 @@ namespace AcademyDataSet
 	//dgvStudents.DataSource = //resultTable;
 			//GroupsRelatedData.Print(resultTable.TableName);
 
-			Type columnType = cbStudentsGroups.SelectedValue.GetType();
-			MessageBox.Show($"Type selectedItem: {columnType}");
+			//Type columnType = cbStudentsGroups.SelectedValue.GetType();
+			//MessageBox.Show($"Type selectedItem: {columnType}");
 
 		}
 

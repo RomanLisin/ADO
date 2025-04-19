@@ -6,17 +6,19 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using Academy;
 
 namespace AcademyDataSet
 {
 	//2. вынести DataSet и весь его функционал в класс Cache;
 	internal class Cache : DataSet
 	{
-		string CONNECTION_STRING;
-		SqlConnection connection = null;
-		public Cache(string CONNECTION_STRING)
+		readonly string CONNECTION_STRING;
+		Connector connection;
+		public Cache(string connectionString)
 		{
-			connection = new SqlConnection(CONNECTION_STRING);
+			CONNECTION_STRING = connectionString;
+			connection = new Connector(CONNECTION_STRING);
 		}
 		public void AddTable(string table, string columns)
 		{
@@ -61,7 +63,7 @@ namespace AcademyDataSet
 				new DataColumn[] { this.Tables[table].Columns[0] };
 
 			string cmd = $"SELECT {string.Join(",",a_columns.Select(c => c.Split(':')[0]))} FROM {table}";
-			SqlDataAdapter adapter = new SqlDataAdapter(cmd, connection);
+			SqlDataAdapter adapter = new SqlDataAdapter(cmd, connection.GetConnection());
 			adapter.Fill(this.Tables[table]);
 			Print(table);
 		}
