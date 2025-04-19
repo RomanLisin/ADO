@@ -12,10 +12,11 @@ namespace AcademyDataSet
 	//2. вынести DataSet и весь его функционал в класс Cache;
 	internal class Cache : DataSet
 	{
-		string CONNECTION_STRING;
+		readonly string CONNECTION_STRING;
 		SqlConnection connection = null;
-		public Cache(string CONNECTION_STRING)
+		public Cache(string connectionString)
 		{
+			this.CONNECTION_STRING = connectionString;
 			connection = new SqlConnection(CONNECTION_STRING);
 		}
 		public void AddTable(string table, string columns)
@@ -65,6 +66,22 @@ namespace AcademyDataSet
 			adapter.Fill(this.Tables[table]);
 			Print(table);
 		}
+		public void LoadTable(string tableName)
+		{
+			//using (var connection = new SqlConnection(CONNECTION_STRING))
+			using (var adapter = new SqlDataAdapter($"SELECT * FROM {tableName}", connection))
+			{
+				adapter.Fill(this, tableName);
+
+				// Set primary key if table has an ID column
+				string idColumn = $"{tableName.ToLower().Substring(0, tableName.Length - 1)}_id";
+				if (this.Tables[tableName].Columns.Contains(idColumn))
+				{
+					this.Tables[tableName].PrimaryKey =
+						new DataColumn[] { this.Tables[tableName].Columns[idColumn] };
+				}
+			}
+		}
 		public void AddRelation(string relation_name, string child, string parent)
 		{
 			this.Relations.Add
@@ -73,6 +90,22 @@ namespace AcademyDataSet
 					this.Tables[parent.Split(',')[0]].Columns[parent.Split(',')[1]],
 					this.Tables[child.Split(',')[0]].Columns[child.Split(',')[1]]
 				);
+		}
+		public void AddRelationNew(string relationName, string parentTable, string parentColumn,
+						  string childTable, string childColumn)
+		{
+			// проверка, что родительский столбец первичный ключ
+			if (!this.Tables[parentTable].PrimaryKey.Any(pk => pk.ColumnName == parentColumn))
+			{
+				this.Tables[parentTable].PrimaryKey = new[] { this.Tables[parentTable].Columns[parentColumn] };
+			}
+			DataRelation relation = new DataRelation(
+				relationName,
+				this.Tables[parentTable].Columns[parentColumn],
+				this.Tables[childTable].Columns[childColumn],
+				createConstraints: false // отключаем проверку уникальности
+				);
+			this.Relations.Add(relation);
 		}
 		public void Print(string table)
 		{
