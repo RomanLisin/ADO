@@ -12,6 +12,7 @@ using System.Runtime.InteropServices;
 using System.Data.SqlClient;
 using System.Configuration;
 using Academy;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
 
 namespace AcademyDataSet
@@ -84,8 +85,8 @@ namespace AcademyDataSet
 															//.AsEnumerable()
 															//.Select(t => t.Field<string>("direction_name"))
 															//.ToList();
-			cbStudentsDirections.DisplayMember = "direction_name";    // что отображать
-			cbStudentsDirections.ValueMember = "direction_id";        // с чем работать
+			cbStudentsDirections.DisplayMember = cbGroupsDirections.DisplayMember = "direction_name";    // что отображать
+			cbStudentsDirections.ValueMember = cbGroupsDirections.ValueMember =  "direction_id";        // с чем работать
 
 			GroupsRelatedData.Print("Groups");
 			//LoadGroupRelatedData();
@@ -112,27 +113,64 @@ namespace AcademyDataSet
 			//									where t.Field<int>("direction") == (int)cbStudentsDirections.SelectedValue
 			//									select t.Field<string>("group_name").ToList();
 			cbStudentsGroups.DisplayMember = "GroupName"; // что отображать
-			cbStudentsGroups.ValueMember = "GroupID";   // c чем работать
+			cbStudentsGroups.ValueMember = "GroupId";   // c чем работать
 
-			//Type columnType = GroupsRelatedData.Tables["Groups"].Columns["direction"].DataType;   // узнать тип колонки
-			//MessageBox.Show($"Тип столбца 'direction': {columnType}");
-			//Console.WriteLine(GroupsRelatedData.Tables["Groups"].Columns["direction"].DataType);
-			var filteredRows = GroupsRelatedData.Tables["Students"]
-														.AsEnumerable()
-														.Where(t => t.Field<int?>("group") == (int?)cbStudentsGroups.SelectedItem);
-			if (filteredRows.Any())
-			{
-				dgvStudents.DataSource = filteredRows.CopyToDataTable();
-			}
-			else
+			int? selectedDirectionId = cbStudentsDirections.SelectedValue as int?;
+			int? selectedGroupId = cbStudentsGroups.SelectedValue as int?;
+
+			if (selectedDirectionId == null || selectedGroupId == null)
 			{
 				dgvStudents.DataSource = null;
+                Console.WriteLine($"Здесь сработал return из за того, что selectedDirectionId == null || selectedGroupId == null");
+
+				return;
 			}
-			dgvStudents.Refresh();
-			
+			Console.WriteLine($"selectedDirectionId = {selectedDirectionId}");
+			Console.WriteLine($"selectedDirectionId = {selectedGroupId}");
+
+			dgvStudents.DataSource = (from student in GroupsRelatedData.Tables["Students"].AsEnumerable()
+            join groupRow in GroupsRelatedData.Tables["Groups"].AsEnumerable()
+               // .Where(g => g.Field<int?>("group_id") == selectedGroupId)
+                on student.Field<int?>("group") equals groupRow.Field<int?>("group_id")
+            join directionRow in GroupsRelatedData.Tables["Directions"].AsEnumerable()
+                .Where(d => d.Field<int?>("direction_id") == selectedDirectionId)
+                on groupRow.Field<int?>("direction") equals directionRow.Field<int?>("direction_id")
+            select new {
+                stud_id = student.Field<int>("stud_id"),
+                last_name = student.Field<string>("last_name"),
+                first_name = student.Field<string>("first_name"),
+                group_ = student.Field<int?>("group"),
+                group_name = groupRow.Field<string>("group_name"),
+                direction_name = directionRow.Field<string>("direction_name")
+            }).AsEnumerable().ToArray();
+
+//		// Преобразуем в DataTable (требует дополнительной обработки)
+//		DataTable resultTable = new DataTable();
+//		resultTable.Columns.Add("stud_id", typeof(int));
+//resultTable.Columns.Add("last_name", typeof(string));
+//resultTable.Columns.Add("first_name", typeof(string));
+//resultTable.Columns.Add("group", typeof(int));
+//resultTable.Columns.Add("group_name", typeof(string));
+//resultTable.Columns.Add("direction_name", typeof(string));
+
+//foreach (var item in query)
+//{
+//    resultTable.Rows.Add(
+//		item.stud_id,
+//		item.last_name,
+//		item.first_name,
+//		item.group_,
+//		item.group_name,
+//		item.direction_name
+//	);
+//}
+
+	//dgvStudents.DataSource = //resultTable;
+			//GroupsRelatedData.Print(resultTable.TableName);
+
 			Type columnType = cbStudentsGroups.SelectedValue.GetType();
 			MessageBox.Show($"Type selectedItem: {columnType}");
-			
+
 		}
 
 		void LoadGroupRelatedData()
