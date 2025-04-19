@@ -167,6 +167,7 @@
 			this.cbGroupsDirections.Name = "cbGroupsDirections";
 			this.cbGroupsDirections.Size = new System.Drawing.Size(325, 21);
 			this.cbGroupsDirections.TabIndex = 1;
+			this.cbGroupsDirections.SelectedIndexChanged += new System.EventHandler(this.cbGroupsDirections_SelectedIndexChanged);
 			// 
 			// dgvGroups
 			// 

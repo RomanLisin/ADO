@@ -19,30 +19,9 @@ namespace AcademyDataSet
 {
 	public partial class MainForm : Form
 	{
-		//Query query;
 		readonly string CONNECTION_STRING = "";
 		Cache GroupsRelatedData = null;
 		
-		//Query[] queries = new Query[]
-		//{
-		//	new Query("*", "Students JOIN Groups ON ([group] = group_id) JOIN Directions ON (direction=direction_id)"),
-		//	new Query("group_id, group_name,COUNT(stud_id) AS students_count,direction_name",
-		//		"Students,Groups,Directions",
-		//		"direction=direction_id AND [group] = group_id",
-		//		"group_id, group_name, direction_name"
-		//		),
-		//	new Query
-		//	(
-		//		@"direction_name, COUNT(DISTINCT group_id) AS N'Количество групп',COUNT (DISTINCT stud_id) AS N'Количество студентов'",
-		//		@" Students JOIN Groups ON ([group] = group_id) RIGHT JOIN Directions ON (direction = direction_id)" ,
-		//		"",  //WHERE
-		//		"direction_name;"
-
-		//		),
-		//	new Query("*", "Disciplines"),
-		//	new Query("*", "Teachers"),
-		//};
-
 		DataGridView[] tables;
 		//string[] status_messages = new string[]
 		//{
@@ -81,12 +60,15 @@ namespace AcademyDataSet
 			dgvStudents.DataSource = GroupsRelatedData.Tables["Students"];
 			dgvDisciplines.DataSource = GroupsRelatedData.Tables["Disciplines"];
 			dgvTeachers.DataSource = GroupsRelatedData.Tables["Teachers"];
-			cbStudentsDirections.DataSource = cbGroupsDirections.DataSource = GroupsRelatedData.Tables["Directions"];
+			cbStudentsDirections.DataSource = GroupsRelatedData.Tables["Directions"];
+			cbGroupsDirections.DataSource = GroupsRelatedData.Tables["Directions"];
 															//.AsEnumerable()
 															//.Select(t => t.Field<string>("direction_name"))
 															//.ToList();
-			cbStudentsDirections.DisplayMember = cbGroupsDirections.DisplayMember = "direction_name";    // что отображать
-			cbStudentsDirections.ValueMember = cbGroupsDirections.ValueMember =  "direction_id";        // с чем работать
+			cbStudentsDirections.DisplayMember = "direction_name";
+			cbGroupsDirections.DisplayMember = "direction_name";    // что отображать
+			cbStudentsDirections.ValueMember = "direction_id";
+			cbGroupsDirections.ValueMember =  "direction_id";        // с чем работать
 
 			GroupsRelatedData.Print("Groups");
 			//LoadGroupRelatedData();
@@ -122,10 +104,7 @@ namespace AcademyDataSet
 			{
 				dgvStudents.DataSource = null;
 				Console.WriteLine($"Здесь сработал return из за того, что selectedDirectionId == null || selectedGroupId == null");
-				//cbStudentsGroups.Items.Clear();
-				//cbStudentsGroups.SelectedIndex = -1;
-				//cbStudentsGroups.SelectedItem = null;
-				//cbStudentsGroups.SelectedText = "";
+			
 
 				return;
 			}
@@ -177,6 +156,44 @@ namespace AcademyDataSet
 
 		}
 
+		private void cbGroupsDirections_SelectedIndexChanged(object sender, EventArgs e)
+		{
+			if (cbGroupsDirections.SelectedValue == null)
+			{
+				MessageBox.Show("Not select direction");
+				return;
+			}
+			int? selectedDirectionId = cbGroupsDirections.SelectedValue as int?;
+
+			if (selectedDirectionId == null)
+			{
+				//dgvGroups.DataSource = null;
+				Console.WriteLine($"Здесь сработал return из за того, что selectedDirectionId == null");
+				cbGroupsDirections.DataSource = GroupsRelatedData.Tables["Directions"];
+
+				return;
+			}
+			Console.WriteLine($"selectedDirectionId = {selectedDirectionId}");
+
+			dgvGroups.DataSource = (//from student in GroupsRelatedData.Tables["Students"].AsEnumerable()
+									  from /*join*/ groupRow in GroupsRelatedData.Tables["Groups"].AsEnumerable()
+										  // .Where(g => g.Field<int?>("group_id") == selectedGroupId)
+										 // on student.Field<int?>("group") equals groupRow.Field<int?>("group_id")
+									  join directionRow in GroupsRelatedData.Tables["Directions"].AsEnumerable()
+										  .Where(d => d.Field<int?>("direction_id") == selectedDirectionId)
+										  on groupRow.Field<int?>("direction") equals directionRow.Field<int?>("direction_id")
+									  select new
+									  {
+										  //stud_id = student.Field<int>("stud_id"),
+										  //last_name = student.Field<string>("last_name"),
+										  //first_name = student.Field<string>("first_name"),
+										  //group_ = student.Field<int?>("group"),
+										  group_id = groupRow.Field<int?>("group_id"),
+										  group_name = groupRow.Field<string>("group_name"),
+										  direction_id = directionRow.Field<int?>("direction_id")
+									  }).AsEnumerable().ToArray();
+		}
+		
 		void LoadGroupRelatedData()
 		{
 			//GroupsRelatedData = new DataSet();
