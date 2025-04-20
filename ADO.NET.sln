@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSet", "DataSet\DataSet.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CacheDataSet", "CacheDataSet\CacheDataSet.csproj", "{B1DC7FAF-7213-4393-8EA3-77534C52A3C6}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConnectorSet", "ConnectorSet\ConnectorSet.csproj", "{DC39B1BD-3ACD-4195-8656-8F079CAAEA7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{B1DC7FAF-7213-4393-8EA3-77534C52A3C6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B1DC7FAF-7213-4393-8EA3-77534C52A3C6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B1DC7FAF-7213-4393-8EA3-77534C52A3C6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC39B1BD-3ACD-4195-8656-8F079CAAEA7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC39B1BD-3ACD-4195-8656-8F079CAAEA7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC39B1BD-3ACD-4195-8656-8F079CAAEA7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC39B1BD-3ACD-4195-8656-8F079CAAEA7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

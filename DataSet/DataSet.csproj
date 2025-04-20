@@ -47,9 +47,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Cache.cs">
-      <SubType>Component</SubType>
-    </Compile>
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -84,9 +81,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Academy\Academy.csproj">
-      <Project>{91e02bb7-2d29-402b-a81e-effb093fdc00}</Project>
-      <Name>Academy</Name>
+    <ProjectReference Include="..\CacheDataSet\CacheDataSet.csproj">
+      <Project>{b1dc7faf-7213-4393-8ea3-77534c52a3c6}</Project>
+      <Name>CacheDataSet</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

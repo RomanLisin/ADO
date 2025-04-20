@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data;
-using System.Data.SqlClient;
 using System.Linq;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
-using Academy;
 
-namespace AcademyDataSet
+using System.Runtime.InteropServices;
+using System.Data;
+using System.Data.SqlClient;
+using System.Configuration;
+
+using ConnectorSet;
+
+namespace CacheDataSet
 {
-	//2. вынести DataSet и весь его функционал в класс Cache;
-	internal class Cache : DataSet
+	public class Cache : DataSet
 	{
+
 		readonly string CONNECTION_STRING;
 		Connector connection;
 		public Cache(string connectionString)
@@ -29,13 +32,13 @@ namespace AcademyDataSet
 			string[] a_columns = columns.Split(',');
 			//for (int i = 0; i < a_columns.Length; i++)
 			//{
-			foreach(var col in a_columns)
-			{ 
+			foreach (var col in a_columns)
+			{
 				//Поддержка синтаксиса: "columnName:type"
 				string[] parts = col.Split(':');
 				string columnName = parts[0];
 				Type columnType = typeof(string); // по умолчанию
-				if(parts.Length > 1)
+				if (parts.Length > 1)
 				{
 					string typeName = parts[1].ToLower();
 					switch (typeName)
@@ -56,13 +59,13 @@ namespace AcademyDataSet
 					}
 				}
 
-				this.Tables[table].Columns.Add(columnName,columnType);
+				this.Tables[table].Columns.Add(columnName, columnType);
 			}
 			// 2.3) Определяем, какое поле будет первичным ключом:
 			this.Tables[table].PrimaryKey =
 				new DataColumn[] { this.Tables[table].Columns[0] };
 
-			string cmd = $"SELECT {string.Join(",",a_columns.Select(c => c.Split(':')[0]))} FROM {table}";
+			string cmd = $"SELECT {string.Join(",", a_columns.Select(c => c.Split(':')[0]))} FROM {table}";
 			SqlDataAdapter adapter = new SqlDataAdapter(cmd, connection.GetConnection());
 			adapter.Fill(this.Tables[table]);
 			Print(table);

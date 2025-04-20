@@ -11,9 +11,9 @@ using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Data.SqlClient;
 using System.Configuration;
-using Academy;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+//using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
+using CacheDataSet;
 
 namespace AcademyDataSet
 {
