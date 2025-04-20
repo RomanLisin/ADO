@@ -1,4 +1,4 @@
-﻿namespace ConnectorSet
+﻿namespace Connection
 {
 	partial class MainForm
 	{

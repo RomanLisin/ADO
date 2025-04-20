@@ -1,4 +1,4 @@
-﻿namespace CacheDataSet
+﻿namespace Caching
 {
 	partial class MainForm
 	{

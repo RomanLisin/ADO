@@ -13,7 +13,7 @@ using System.Data.SqlClient;
 using System.Configuration;
 //using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
 
-using CacheDataSet;
+using Caching;
 
 namespace AcademyDataSet
 {

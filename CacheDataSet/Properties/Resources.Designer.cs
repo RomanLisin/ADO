@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace CacheDataSet.Properties
+namespace Caching.Properties
 {
 
 

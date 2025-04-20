@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 
 
-namespace CacheDataSet
+namespace Caching
 {
 	public partial class MainForm : Form
 	{
