@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Academy", "Academy\Academy.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataSet", "DataSet\DataSet.csproj", "{BC180B9E-5DAB-4D46-BA6B-F236D4664AA4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Cache", "..\Cache\Cache.csproj", "{FBDE7E1E-B433-426B-8F59-8941C1BAEC7F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{BC180B9E-5DAB-4D46-BA6B-F236D4664AA4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BC180B9E-5DAB-4D46-BA6B-F236D4664AA4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BC180B9E-5DAB-4D46-BA6B-F236D4664AA4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FBDE7E1E-B433-426B-8F59-8941C1BAEC7F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FBDE7E1E-B433-426B-8F59-8941C1BAEC7F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FBDE7E1E-B433-426B-8F59-8941C1BAEC7F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FBDE7E1E-B433-426B-8F59-8941C1BAEC7F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
