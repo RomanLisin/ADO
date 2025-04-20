@@ -18,7 +18,7 @@ namespace AcademyDataSet
 	{
 		readonly string CONNECTION_STRING = "";
 		SqlConnection connection = null;
-		DataSet GroupsRelatedData = null;
+		DataSet set = null;
 		public MainForm()
 		{
 			InitializeComponent();
@@ -27,45 +27,49 @@ namespace AcademyDataSet
 			AllocConsole();
             Console.WriteLine(CONNECTION_STRING);
 			//1 Создаем DataSet
-			GroupsRelatedData = new DataSet();
+			set = new DataSet("GroupsRelatedData");
 			AddTable("Directions", "direction_id,direction_name");
 			AddTable("Groups", "group_id,group_name,direction");
 			AddRelation("GroupsDirections", "Groups,direction", "Directions,direction_id");
 			PrintGroups();
+			Print("Groups");
 			//LoadGroupRelatedData();
-		}
+			//Console.WriteLine(HasParents("Directions"));
+			//Console.WriteLine(HasParents("Groups"));
+
+        }
 		public void AddTable(string table, string columns)
 		{
 			//2.1)Добавляем таблицу в DataSet
-			GroupsRelatedData.Tables.Add(table);
+			set.Tables.Add(table);
 
 			//2.2) Добавляем поля (столбики) в таблицу:
 			string[] a_columns = columns.Split(',');
 			for(int i=0; i<a_columns.Length; i++)
 			{
-				GroupsRelatedData.Tables[table].Columns.Add(a_columns[i]);
+				set.Tables[table].Columns.Add(a_columns[i]);
 			}
 			// 2.3) Определяем, какое поле будет первичным ключом:
-			GroupsRelatedData.Tables[table].PrimaryKey =
-				new DataColumn[] { GroupsRelatedData.Tables[table].Columns[0] };
+			set.Tables[table].PrimaryKey =
+				new DataColumn[] { set.Tables[table].Columns[0] };
 
 			string cmd = $"SELECT {columns} FROM {table}";
 			SqlDataAdapter adapter = new SqlDataAdapter(cmd, connection);
-			adapter.Fill(GroupsRelatedData.Tables[table]);
+			adapter.Fill(set.Tables[table]);
 			Print(table);
 		}
 		public void AddRelation(string relation_name, string child, string parent)
 		{
-			GroupsRelatedData.Relations.Add
+			set.Relations.Add
 				(
 					relation_name,
-					GroupsRelatedData.Tables[parent.Split(',')[0]].Columns[parent.Split(',')[1]],
-					GroupsRelatedData.Tables[child.Split(',')[0]].Columns[child.Split(',')[1]]
+					set.Tables[parent.Split(',')[0]].Columns[parent.Split(',')[1]],
+					set.Tables[child.Split(',')[0]].Columns[child.Split(',')[1]]
 				);
 		}
 		void LoadGroupRelatedData()
 		{
-			GroupsRelatedData = new DataSet();
+			set = new DataSet();
 			//1 Создаем DataSet
 
 			//2)Добавляем таблицы в DataSet
@@ -73,31 +77,31 @@ namespace AcademyDataSet
 			const string dst_col_direction_id = "direction_id";
 			const string dst_col_direction_name = "direction_name";
 			//2.1)Добавляем таблицу в DataSet
-			GroupsRelatedData.Tables.Add(dsTable_Directions);
+			set.Tables.Add(dsTable_Directions);
 			//2.2)Добавляем поля (столбики) в таблицу:
-			GroupsRelatedData.Tables[dsTable_Directions].Columns.Add(dst_col_direction_id, typeof(byte));
-			GroupsRelatedData.Tables[dsTable_Directions].Columns.Add(dst_col_direction_name, typeof(string));
+			set.Tables[dsTable_Directions].Columns.Add(dst_col_direction_id, typeof(byte));
+			set.Tables[dsTable_Directions].Columns.Add(dst_col_direction_name, typeof(string));
 			//2.3)Определяем, какое поле будет первичным ключом:
-			GroupsRelatedData.Tables[dsTable_Directions].PrimaryKey =
-				new DataColumn[] { GroupsRelatedData.Tables[dsTable_Directions].Columns[dst_col_direction_id] };
+			set.Tables[dsTable_Directions].PrimaryKey =
+				new DataColumn[] { set.Tables[dsTable_Directions].Columns[dst_col_direction_id] };
 
 			const string dsTable_Groups = "Groups";
 			const string dst_Groups_col_group_id = "group_id";
 			const string dst_Groups_col_group_name = "group_name";
 			const string dst_Groups_col_group_direction = "diretion";
-			GroupsRelatedData.Tables.Add(dsTable_Groups);
-			GroupsRelatedData.Tables[dsTable_Groups].Columns.Add(dst_Groups_col_group_id, typeof(int));
-			GroupsRelatedData.Tables[dsTable_Groups].Columns.Add(dst_Groups_col_group_name, typeof(string));
-			GroupsRelatedData.Tables[dsTable_Groups].Columns.Add(dst_Groups_col_group_direction, typeof(byte));
-			GroupsRelatedData.Tables[dsTable_Groups].PrimaryKey =
-				new DataColumn[] { GroupsRelatedData.Tables[dsTable_Groups].Columns[0] };
+			set.Tables.Add(dsTable_Groups);
+			set.Tables[dsTable_Groups].Columns.Add(dst_Groups_col_group_id, typeof(int));
+			set.Tables[dsTable_Groups].Columns.Add(dst_Groups_col_group_name, typeof(string));
+			set.Tables[dsTable_Groups].Columns.Add(dst_Groups_col_group_direction, typeof(byte));
+			set.Tables[dsTable_Groups].PrimaryKey =
+				new DataColumn[] { set.Tables[dsTable_Groups].Columns[0] };
 
 			//3 Строим связи между таблицами
-			GroupsRelatedData.Relations.Add
+			set.Relations.Add
 				(
 					"GroupsDirections",
-					GroupsRelatedData.Tables[dsTable_Directions].Columns[dst_col_direction_id], // Parent field - первичный ключ в другой таблице
-					GroupsRelatedData.Tables[dsTable_Groups].Columns[dst_Groups_col_group_direction] // Child field - внешний ключ
+					set.Tables[dsTable_Directions].Columns[dst_col_direction_id], // Parent field - первичный ключ в другой таблице
+					set.Tables[dsTable_Groups].Columns[dst_Groups_col_group_direction] // Child field - внешний ключ
 				);
 			//4 Загрузка данных в DataSet
 			string directionsCmd = "SELECT * FROM Directions";
@@ -105,44 +109,84 @@ namespace AcademyDataSet
 			SqlDataAdapter directionsAdapter = new SqlDataAdapter(directionsCmd, connection);
 			SqlDataAdapter groupsAdapter = new SqlDataAdapter(groupsCmd, connection);
 
-			directionsAdapter.Fill(GroupsRelatedData.Tables[dsTable_Directions]);
-			groupsAdapter.Fill(GroupsRelatedData.Tables[dsTable_Groups]);
+			directionsAdapter.Fill(set.Tables[dsTable_Directions]);
+			groupsAdapter.Fill(set.Tables[dsTable_Groups]);
 
 			Print("Directions");
 			Print("Groups");
 		}
 		public void Print(string table)
 		{
-            Console.WriteLine(table);
-            Console.WriteLine("\n========================================================\n");
-			for (int i = 0; i < GroupsRelatedData.Tables[table].Columns.Count; i++)
-				Console.Write(GroupsRelatedData.Tables[table].Columns[i].Caption + "\t") ;
-            Console.WriteLine("\n--------------------------------------------------------\n");
+			Console.WriteLine(table);
+			Console.WriteLine("\n========================================================\n");
+			for (int i = 0; i < set.Tables[table].Columns.Count; i++)
+				Console.Write(set.Tables[table].Columns[i].Caption + "\t");
+			Console.WriteLine("\n--------------------------------------------------------\n");
+			int number_of_parents = set.Tables[table].ParentRelations.Count;
+			for (int i = 0; i < number_of_parents; i++)
+			{
+				Console.WriteLine(set.Tables[table].ParentRelations[i].ToString());
+            }
 
-            for (int i=0; i < GroupsRelatedData.Tables[table].Rows.Count; i++)
+			Console.WriteLine(set.Tables[table].ParentRelations.Contains("GroupsDirections"));
+
+            for (int i=0; i < set.Tables[table].Rows.Count; i++)
 			{
 				//Console.WriteLine(GroupsRelatedData.Tables[table].Rows[i] + ":\t");
-				for(int j=0; j < GroupsRelatedData.Tables[table].Columns.Count; j++)
+				for (int j = 0; j < set.Tables[table].Columns.Count; j++)
 				{
-					Console.Write(GroupsRelatedData.Tables[table].Rows[i][j]+ "\t\t");
+
+					if (
+						HasParents(table) &&
+						set.Tables[table].ParentRelations[0].ChildColumns.Contains(set.Tables[table].Columns[j])
+						)
+				
+					{
+					string parent_relation_name = !HasParents(table) ? "" :
+						$"{set.Tables[table].TableName}{set.Tables[table].Columns[j].ColumnName}s";
+						string parent_column_name = $"{set.Tables[table].Columns[j].ColumnName}_name";
+						Console.WriteLine
+							(
+							//set.Tables[table].ParentRelations[0]
+							//.ParentColumns[$"{set.Tables[table].Columns[j].ColumnName}_name"]
+							set.Tables[table].Rows[i].GetParentRow(parent_relation_name)[parent_column_name]
+							);
+                    }
+
+					//		if (
+					//			set.Tables[table]
+					//			.ParentRelations
+					//			.Contains(parent_relation_name)
+
+					//			)
+					//			Console.WriteLine(
+					//		set.Tables[table]
+					//		.Rows[i]
+					//		.GetParentRow(parent_relation_name)[$"{set.Tables[table].Columns[i].ColumnName}_name"]
+					//		);
+						else
+					Console.Write(set.Tables[table].Rows[i][j]+ "\t\t");
                 }
                 Console.WriteLine();
             }
             Console.WriteLine("\n========================================================\n");
 
         }
-
+		bool HasParents(string table)
+		{
+			return set.Tables[table].ParentRelations.Count > 0;
+		}
 		void PrintGroups()
 		{
 			Console.WriteLine("\n========================================================\n");
 			string table = "Groups";
-			for (int i = 0; i < GroupsRelatedData.Tables[table].Rows.Count; i++)
+			for (int i = 0; i < set.Tables[table].Rows.Count; i++)
 			{
-				for(int j=0; j < GroupsRelatedData.Tables[table].Columns.Count; j++)
+				for(int j=0; j < set.Tables[table].Columns.Count; j++)
 				{
-					Console.Write(GroupsRelatedData.Tables[table].Rows[i][j] + "\t") ;
+					Console.Write(set.Tables[table].Rows[i][j] + "\t") ;
                 }
-				Console.WriteLine(GroupsRelatedData.Tables[table].Rows[i].GetParentRow("GroupsDirections")["direction_name"]);
+				Console.WriteLine(set.Tables[table].Rows[i].GetParentRow("GroupsDirections")["direction_name"]);
                 Console.WriteLine();
             }
             Console.WriteLine("\n========================================================\n");
