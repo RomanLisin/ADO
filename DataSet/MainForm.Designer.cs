@@ -28,8 +28,10 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
 			this.cbDirections = new System.Windows.Forms.ComboBox();
 			this.cbGroups = new System.Windows.Forms.ComboBox();
+			this.timerDataSet = new System.Windows.Forms.Timer(this.components);
 			this.SuspendLayout();
 			// 
 			// cbDirections
@@ -51,6 +53,10 @@
 			this.cbGroups.Size = new System.Drawing.Size(200, 21);
 			this.cbGroups.TabIndex = 1;
 			// 
+			// timerDataSet
+			// 
+			this.timerDataSet.Tick += new System.EventHandler(this.timerDataSet_Tick);
+			// 
 			// MainForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -68,6 +74,7 @@
 
 		private System.Windows.Forms.ComboBox cbDirections;
 		private System.Windows.Forms.ComboBox cbGroups;
+		private System.Windows.Forms.Timer timerDataSet;
 	}
 }
 

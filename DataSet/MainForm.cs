@@ -56,5 +56,10 @@ namespace AcademyDataSet
             Console.WriteLine(filter);
 			cache.Set.Tables["Groups"].DefaultView.RowFilter = filter;
         }
+
+		private void timerDataSet_Tick(object sender, EventArgs e)
+		{
+
+		}
 	}
 }
