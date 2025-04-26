@@ -38,13 +38,13 @@ namespace AcademyDataSet
 			Console.WriteLine(cache.HasParents("Groups"));
 
 		}
-		private Cache AddTables(Cache cache)
+		private  Cache AddTables(Cache cache)
 		{
 			cache = new Cache(ConfigurationManager.ConnectionStrings["VPD_311_Import"].ConnectionString);
 			cache.AddTable("Directions", "direction_id,direction_name");
 			cache.AddTable("Groups", "group_id,group_name,direction");
 			cache.AddRelation("GroupsDirections", "Groups,direction", "Directions,direction_id");
-			return cache;
+			return  cache;
 		}
 		private ref Cache UpdateTable(ref Cache cache)
 		{
@@ -73,7 +73,7 @@ namespace AcademyDataSet
 
 		private void cbDirections_SelectedIndexChanged(object sender, EventArgs e)
 		{
-			LoadDataFromDataSet(cache);
+			//LoadDataFromDataSet(cache);
 			object selectedValue = (sender as ComboBox).SelectedValue;
 			string filter = $"direction = {selectedValue.ToString()}";
             Console.WriteLine(filter);
