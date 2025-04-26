@@ -24,17 +24,38 @@ namespace AcademyDataSet
 			InitializeComponent();
 			AllocConsole();
 			//1 Создаем DataSet
-			cache = new Cache(ConfigurationManager.ConnectionStrings["VPD_311_Import"].ConnectionString);
+			//cache = new Cache(ConfigurationManager.ConnectionStrings["VPD_311_Import"].ConnectionString);
 			//set = new DataSet("GroupsRelatedData");
-			cache.AddTable("Directions", "direction_id,direction_name");
-			cache.AddTable("Groups", "group_id,group_name,direction");
-			cache.AddRelation("GroupsDirections", "Groups,direction", "Directions,direction_id");
+			//cache.AddTable("Directions", "direction_id,direction_name");
+			//cache.AddTable("Groups", "group_id,group_name,direction");
+			//cache.AddRelation("GroupsDirections", "Groups,direction", "Directions,direction_id");
+			cache = AddTables(cache);
 			cache.PrintGroups();
 			cache.Print("Groups");
 			//LoadGroupRelatedData();
+			LoadDataFromDataSet(cache);
 			Console.WriteLine(cache.HasParents("Directions"));
 			Console.WriteLine(cache.HasParents("Groups"));
 
+		}
+		private Cache AddTables(Cache cache)
+		{
+			cache = new Cache(ConfigurationManager.ConnectionStrings["VPD_311_Import"].ConnectionString);
+			cache.AddTable("Directions", "direction_id,direction_name");
+			cache.AddTable("Groups", "group_id,group_name,direction");
+			cache.AddRelation("GroupsDirections", "Groups,direction", "Directions,direction_id");
+			return cache;
+		}
+		private ref Cache UpdateTable(ref Cache cache)
+		{
+			cache.Set.Tables["Groups"].Clear();
+			cache.Set.Tables["Directions"].Clear();
+			cache = AddTables(cache);
+			return ref cache;
+		}
+		private void LoadDataFromDataSet(Cache cache)
+		{
+			
 			cbDirections.DataSource = cache.Set.Tables["Directions"];
 			cbDirections.ValueMember = "direction_id";
 			cbDirections.DisplayMember = "direction_name";
@@ -42,6 +63,7 @@ namespace AcademyDataSet
 			cbGroups.DataSource = cache.Set.Tables["Groups"];
 			cbGroups.ValueMember = "group_id";
 			cbGroups.DisplayMember = "group_name";
+
 		}
 		
 		[DllImport("kernel32.dll")]
@@ -51,6 +73,7 @@ namespace AcademyDataSet
 
 		private void cbDirections_SelectedIndexChanged(object sender, EventArgs e)
 		{
+			LoadDataFromDataSet(cache);
 			object selectedValue = (sender as ComboBox).SelectedValue;
 			string filter = $"direction = {selectedValue.ToString()}";
             Console.WriteLine(filter);
@@ -59,7 +82,12 @@ namespace AcademyDataSet
 
 		private void timerDataSet_Tick(object sender, EventArgs e)
 		{
-
-		}
+			int index = cbDirections.SelectedIndex;
+			UpdateTable(ref cache);
+			LoadDataFromDataSet(cache);
+			cbDirections.SelectedIndex = index;
+			cbDirections.SelectedIndex = cbDirections.SelectedIndex;
+            Console.WriteLine($"update {sender.ToString()}");
+        }
 	}
 }

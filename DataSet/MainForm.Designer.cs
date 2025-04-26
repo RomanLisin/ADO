@@ -55,6 +55,8 @@
 			// 
 			// timerDataSet
 			// 
+			this.timerDataSet.Enabled = true;
+			this.timerDataSet.Interval = 5000;
 			this.timerDataSet.Tick += new System.EventHandler(this.timerDataSet_Tick);
 			// 
 			// MainForm
