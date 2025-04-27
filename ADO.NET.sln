@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPF", "WPF\WPF.csproj", "{3
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grid", "Grid\Grid.csproj", "{8F904084-E1A8-429B-9CB6-08832CEB1CA7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListView", "ListView\ListView.csproj", "{F3AE0100-8CA0-4002-BC1B-0359C5617458}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{8F904084-E1A8-429B-9CB6-08832CEB1CA7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F904084-E1A8-429B-9CB6-08832CEB1CA7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F904084-E1A8-429B-9CB6-08832CEB1CA7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F3AE0100-8CA0-4002-BC1B-0359C5617458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F3AE0100-8CA0-4002-BC1B-0359C5617458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F3AE0100-8CA0-4002-BC1B-0359C5617458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F3AE0100-8CA0-4002-BC1B-0359C5617458}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
