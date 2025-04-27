@@ -19,6 +19,7 @@ namespace AcademyDataSet
 	public partial class MainForm : Form
 	{
 		Cache cache;
+		long version;
 		public MainForm()
 		{
 			InitializeComponent();
@@ -30,12 +31,12 @@ namespace AcademyDataSet
 			//cache.AddTable("Groups", "group_id,group_name,direction");
 			//cache.AddRelation("GroupsDirections", "Groups,direction", "Directions,direction_id");
 			cache = AddTables(cache);
-			cache.PrintGroups();
-			cache.Print("Groups");
+			//cache.PrintGroups();
+			//cache.Print("Groups");
 			//LoadGroupRelatedData();
 			LoadDataFromDataSet(cache);
-			Console.WriteLine(cache.HasParents("Directions"));
-			Console.WriteLine(cache.HasParents("Groups"));
+			//Console.WriteLine(cache.HasParents("Directions"));
+			//Console.WriteLine(cache.HasParents("Groups"));
 
 		}
 		private  Cache AddTables(Cache cache)
@@ -51,6 +52,7 @@ namespace AcademyDataSet
 			cache.Set.Tables["Groups"].Clear();
 			cache.Set.Tables["Directions"].Clear();
 			cache = AddTables(cache);
+			//LoadDataFromDataSet(cache);
 			return ref cache;
 		}
 		private void LoadDataFromDataSet(Cache cache)
@@ -82,12 +84,18 @@ namespace AcademyDataSet
 
 		private void timerDataSet_Tick(object sender, EventArgs e)
 		{
-			int index = cbDirections.SelectedIndex;
-			UpdateTable(ref cache);
-			LoadDataFromDataSet(cache);
-			cbDirections.SelectedIndex = index;
-			cbDirections.SelectedIndex = cbDirections.SelectedIndex;
-            Console.WriteLine($"update {sender.ToString()}");
+			if (version != cache.CheckChangesDataBase())
+			{
+				int index = cbDirections.SelectedIndex;
+				UpdateTable(ref cache);
+				LoadDataFromDataSet(cache);
+				cbDirections.SelectedIndex = index;
+				cbDirections.SelectedIndex = cbDirections.SelectedIndex;
+				version = cache.CheckChangesDataBase();
+			}
+            //Console.WriteLine($"update {sender.ToString()}");
+            Console.WriteLine(version);
+
         }
 	}
 }
