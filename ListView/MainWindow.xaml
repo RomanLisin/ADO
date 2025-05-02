@@ -31,9 +31,9 @@
             <!--<Rectangle Fill="Red"/>
             <Rectangle Grid.Column="1" Fill="Green"/>
             <Rectangle Grid.Column="2" Fill="Blue" />-->
-            <Button Grid.Column="0" Width="auto" Content="Add" Name="btbAdd"  HorizontalAlignment="Left"          Click="btbAdd_Click" />
-            <Button Grid.Column="1" Width="auto" Content="Delete" Name ="btnDelete"  HorizontalAlignment="Left"     Click="btnDelete_Click" />
-            <Button Grid.Column="2" Width="auto" Content="Clear" Name="btnClear"  HorizontalAlignment="Left"        Click="btnClear_Click" />
+            <Button Grid.Column="0" Width="auto"  Name="btbAdd"     Content="Add"      Click="btbAdd_Click" />
+            <Button Grid.Column="1" Width="auto"  Name ="btnDelete" Content="Delete"   Click="btnDelete_Click"/>
+            <Button Grid.Column="2" Width="auto"  Name="btnClear"   Content="Clear"    Click="btnClear_Click"/>
         </Grid>
         <!--<Button Grid.Column="1" Width="100" Content="Add" Name="btbAdd"    HorizontalAlignment="Left" Margin="5,0,0,0" Click="btbAdd_Click" />
         <Button Grid.Column="1" Width="100" Content="Delete" Name ="btnDelete"  HorizontalAlignment="Left" Margin="105,0,0,0" Click="btnDelete_Click" />
