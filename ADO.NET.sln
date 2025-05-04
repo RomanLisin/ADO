@@ -19,7 +19,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Grid", "Grid\Grid.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ListView", "ListView\ListView.csproj", "{F3AE0100-8CA0-4002-BC1B-0359C5617458}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomAddControls", "CustomAddControls\CustomAddControls.csproj", "{CFD62E95-A4E0-4042-A365-55C93CF3B154}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CustomTextControls", "CustomAddControls\CustomTextControls.csproj", "{CFD62E95-A4E0-4042-A365-55C93CF3B154}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

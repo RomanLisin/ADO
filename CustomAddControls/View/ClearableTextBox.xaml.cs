@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Controls; // for UserControl
 
 
-namespace CustomAddControls.View
+namespace CustomTextControls.View
 {
-	internal class ClearableTextBox
+	partial class ClearableTextBox:UserControl
 	{
 		public ClearableTextBox()
-			{
-				
-			}
+		{
+			InitializeComponent();	
+		}
 	}
 }
