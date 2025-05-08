@@ -5,19 +5,36 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPF"
         mc:Ignorable="d"
-        Title="Introduction to WPF (Windows Presentation Foundation" Height="450" Width="800">
-    <Grid>
-      
-        
-        <!--<Button>Start</Button>-->
-        <Button 
-            Name="btnStart" 
-            Content="Start" 
-            Width="200" 
-            Height="80"
-            FontSize="32"
-            FontWeight="Bold" Click="btnStart_Click"
-         />
+        Title="Academy" Height="450" Width="800">
    
+    
+    <Grid>
+        <TabControl Margin="5">
+            <TabItem Header="Students">
+                <StackPanel Background="#FFE5E5E5">
+                    <Grid Height="40" Background="#FFE5E5E5">
+                    </Grid>
+                    <Grid Background="#FFE5E5E5">
+                        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" FontSize="16" FontWeight="Bold"/>
+                    </Grid>
+                </StackPanel> <!--для использования двух Grid в  TabItem иначе ошибка-->
+            </TabItem>
+            <TabItem Header="Groups">
+                <Grid Background="#FFE5E5E5">
+                    <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}"/>
+                </Grid>
+            </TabItem>
+            <TabItem Header="Directions">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+            <TabItem Header="Disciplines">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+                   <TabItem Header="Teachers">
+                <Grid Background="#FFE5E5E5"/>
+            </TabItem>
+        </TabControl>
+
+
     </Grid>
 </Window>
