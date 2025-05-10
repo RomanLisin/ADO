@@ -11,7 +11,7 @@ using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 using System.Data.SqlClient;
 using System.Windows;
-using Caching;
+using CacheLibrary;
 
 
 
@@ -20,18 +20,23 @@ namespace WPF//.Models
 {
 	public class ViewModel : INotifyPropertyChanged
 	{
+
 		private readonly string CONNECTION_STRING;
-		private Cache groupsRelatedData;
+		private Cache cache;
+		public Cache dataSet { get => cache; }
 
 		public event PropertyChangedEventHandler PropertyChanged;
 	public ViewModel()
 	{
 		CONNECTION_STRING = ConfigurationManager.ConnectionStrings["VPD_311_Import"].ConnectionString;
 		// Initialize data
-		groupsRelatedData = new Cache(CONNECTION_STRING);
-		groupsRelatedData.AddTable("Directions", "direction_id:int,direction_name:string");
-		
-	}
+		cache = new Cache(CONNECTION_STRING);
+
+			cache.AddTable("Students", "stud_id,last_name,first_name,middle_name,group");
+			cache.AddTable("Directions", "direction_id,direction_name");
+			cache.AddTable("Groups", "group_id,group_name,direction");
+
+		}
 	}
 
 }

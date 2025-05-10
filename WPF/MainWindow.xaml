@@ -15,13 +15,13 @@
                     <Grid Height="40" Background="#FFE5E5E5">
                     </Grid>
                     <Grid Background="#FFE5E5E5">
-                        <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}" FontSize="16" FontWeight="Bold"/>
+                        <DataGrid x:Name="studentsDataGrid"  FontSize="16" FontWeight="Bold"/>
                     </Grid>
                 </StackPanel> <!--для использования двух Grid в  TabItem иначе ошибка-->
             </TabItem>
             <TabItem Header="Groups">
                 <Grid Background="#FFE5E5E5">
-                    <DataGrid d:ItemsSource="{d:SampleData ItemCount=5}"/>
+                    <DataGrid />
                 </Grid>
             </TabItem>
             <TabItem Header="Directions">

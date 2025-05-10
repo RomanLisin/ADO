@@ -15,6 +15,8 @@ using System.Windows.Shapes;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
+using System.Data;
+
 
 namespace WPF
 {
@@ -25,7 +27,9 @@ namespace WPF
 	{
 		public MainWindow()
 		{
-			
+			InitializeComponent();
+			ViewModel viewModel = new ViewModel();
+			studentsDataGrid.ItemsSource = viewModel.dataSet.Set.Tables["Students"].DefaultView;
 		}
 
 		private void Window_Loaded(object sender, RoutedEventArgs e)
